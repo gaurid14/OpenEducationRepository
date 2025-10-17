@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -104,4 +105,112 @@
     }
 </script>
 </body>
+=======
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">OER</div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Our products</a></li>
+            <li><a href="#">About US</a></li>
+            <li><a href="#">Contact US</a></li>
+        </ul>
+        <a href="{% url 'logout' %}" class="signup-btn">Logout</a>
+    </div>
+
+    <div class="dashboard-container">
+
+        <div class="dashboard-card">
+            <h2 class="card-title">My Profile</h2>
+            
+            <div class="profile-content-grid">
+
+                <div class="profile-info">
+                    <p><strong>Name:</strong> {{ user.first_name }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>College:</strong> {{ user.college_name }}</p>
+                    <p><strong>Course:</strong> {{ user.get_course_display }}</p>
+                    <p><strong>Year:</strong> {{ user.get_year_display }}</p>
+                </div>
+
+                <div class="profile-picture-area">
+    {% if user.profile_picture %}
+        <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+    {% else %}
+        <img src="{% static 'accounts/default_avatar.png' %}" alt="Default Avatar" class="profile-picture">
+    {% endif %}
+    
+    <form method="POST" enctype="multipart/form-data" class="upload-form">
+        {% csrf_token %}
+
+        {{ form.profile_picture }}
+
+        <label for="id_profile_picture" class="custom-file-upload">Choose File</label>
+        
+        <span id="file-chosen">No file chosen</span>
+
+        <button type="submit" class="login-btn">Update Picture</button>
+    </form>
+</div>
+
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <h2 class="card-title">My Subjects</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">Data Structures and Algorithms</button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><a href="#">Chapter 1: Introduction to Algorithms</a></li>
+                            <li><a href="#">Chapter 2: Arrays and Lists</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Database Management Systems</button>
+                    <div class="accordion-content">
+                         <ul>
+                            <li><a href="#">Chapter 1: ER Models</a></li>
+                            <li><a href="#">Chapter 2: Relational Algebra</a></li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Operating Systems</button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><a href="#">Chapter 1: Processes & Threads</a></li>
+                            <li><a href="#">Chapter 2: Memory Management</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const actualFileInput = document.getElementById('id_profile_picture');
+    const fileChosenText = document.getElementById('file-chosen');
+
+    if (actualFileInput) {
+        actualFileInput.addEventListener('change', function(){
+            // Get the filename and display it
+            fileChosenText.textContent = this.files[0].name
+        });
+    }
+</script>
+</body>
+>>>>>>> 7565647 (Initial project setup with Django, Postgres configs, and requirements.txt)
 </html>
