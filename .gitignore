@@ -3,3 +3,8 @@ venv/
 *.pyc
 __pycache__/
 .idea/
+# Ignore secret and config files
+*.json
+!package.json
+!package-lock.json
+
