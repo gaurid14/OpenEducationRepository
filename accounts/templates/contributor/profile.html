@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contributor Profile</title>
+    <link rel="stylesheet" href="{% static 'frontend/css/style_contro.css' %}">
+    <style>
+        body { font-family: Arial, sans-serif; background: #F4FCFA; margin:0; padding:0; }
+        .container { max-width: 800px; margin: 30px auto; padding: 20px; background:#fff; border-radius:10px; }
+        h2 { color: #1EAE98; margin-bottom: 20px; }
+        .profile-row { margin-bottom: 15px; }
+        .profile-row label { font-weight: bold; display:inline-block; width: 180px; }
+        .profile-pic { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+        .back-btn { display:inline-block; margin-top: 20px; text-decoration:none; background:#1EAE98; color:#fff; padding:8px 12px; border-radius:6px; }
+        .back-btn:hover { background:#178D79; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Contributor Profile</h2>
+
+    {% if contributor.profile_picture %}
+    <img src="{{ contributor.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+    {% endif %}
+
+    <div class="profile-row"><label>Username:</label> {{ contributor.username }}</div>
+    <div class="profile-row"><label>Email:</label> {{ contributor.email }}</div>
+    <div class="profile-row"><label>Phone Number:</label> {{ contributor.phone_number }}</div>
+    <div class="profile-row"><label>Designation:</label> {{ contributor.designation }}</div>
+    <div class="profile-row"><label>Years of Experience:</label> {{ contributor.years_of_experience }}</div>
+    <div class="profile-row"><label>Domain of Expertise:</label>
+        {% for exp in contributor.domain_of_expertise.all %}
+        {{ exp.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}N/A{% endfor %}
+    </div>
+    <div class="profile-row"><label>Highest Qualification:</label> {{ contributor.highest_qualification }}</div>
+    <div class="profile-row"><label>Current Institution:</label> {{ contributor.current_institution }}</div>
+    <div class="profile-row"><label>Bio:</label> {{ contributor.bio }}</div>
+
+    <a href="{% url 'contributor_dashboard' %}" class="back-btn">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

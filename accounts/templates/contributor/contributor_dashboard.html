@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contributor Dashboard</title>
+    <link rel="stylesheet" href="{% static 'frontend/css/style_contro.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #F4FCFA;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #FFFFFF;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.12);
+        }
+        header h2 { color: #1EAE98; }
+        .logout-btn {
+            color: #fff;
+            background: #1EAE98;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+        .logout-btn:hover { background: #178D79; }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Recommended Subjects */
+        .recommendations {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .recommendations h3 { color: #1EAE98; margin-bottom: 15px; }
+        .recommendations ul { list-style: none; padding: 0; }
+        .recommendations li {
+            background: #f4f4f4;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .recommendations li:hover { background: #1EAE98; color: white; }
+
+        /* Chapters Section */
+        .chapters {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .chapters h3 { color: #1EAE98; margin-bottom: 15px; }
+        .chapters ul { list-style: none; padding: 0; }
+        .chapters li {
+            background: #f4f4f4;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .chapters li:hover { background: #1EAE98; color: white; }
+
+        .uploads {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .uploads h3 { color: #1EAE98; margin-bottom: 15px; }
+        .uploads ul { list-style: none; padding: 0; }
+        .uploads li {
+            background: #f4f4f4;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+        .uploads li ul { padding-left: 15px; }
+
+    </style>
+</head>
+<body>
+<header>
+    <h2>Contributor Dashboard</h2>
+    <a href="{% url 'contributor_profile' %}" class="logout-btn" style="margin-right:10px;">Profile</a>
+    <a href="{% url 'home' %}" class="logout-btn">Logout</a>
+</header>
+
+<div class="dashboard-container">
+
+    <!-- Recommended Courses -->
+    <section class="recommendations">
+        <h3>Recommended Subjects</h3>
+        <ul id="recommendedCourses">
+            {% for course in recommended_courses %}
+            <li data-course-id="{{ course.id }}">{{ course.course_name }}</li>
+            {% empty %}
+            <li>No recommendations available.</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Chapters Section (Initially Hidden) -->
+    <section class="chapters" id="chaptersSection" style="display:none;">
+        <h3>Chapters</h3>
+        <ul id="chaptersList">
+            <!-- Filled dynamically with JS -->
+        </ul>
+    </section>
+
+    <!-- Contributor Uploads -->
+    <section class="uploads">
+        <h3>Your Contributions</h3>
+        {% if uploads %}
+        <ul>
+            {% for upload in uploads %}
+            <li>
+                <strong>{{ upload.chapter.course.course_name }} | Ch {{ upload.chapter.chapter_number }}: {{ upload.chapter.chapter_name }}</strong><br>
+                Uploaded on: {{ upload.timestamp|date:"d M Y H:i" }}<br>
+                Status: {{ upload.evaluation_status|yesno:"Evaluated,Pending" }}<br>
+                <em>Files:</em>
+                <ul>
+                    {% if upload.content_check.pdf %}<li>PDF available</li>{% endif %}
+                    {% if upload.content_check.video %}<li>Video available</li>{% endif %}
+                    {% if upload.content_check.assessment %}<li>Assessment available</li>{% endif %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>You have not contributed to any chapters yet.</p>
+        {% endif %}
+    </section>
+
+
+</div>
+
+<script>
+    const courses = {{ recommended_courses|safe }};
+    const chaptersByCourse = {{ chapters_by_course|safe }};
+
+    // DOM elements
+    const recommendedList = document.getElementById('recommendedCourses');
+    const chaptersSection = document.getElementById('chaptersSection');
+    const chaptersList = document.getElementById('chaptersList');
+
+    // Click on course -> show chapters
+    recommendedList.addEventListener('click', (e) => {
+        const target = e.target;
+        if(target.tagName === 'LI' && target.dataset.courseId){
+            const courseId = target.dataset.courseId;
+            const chapters = chaptersByCourse[courseId] || [];
+
+            // Populate chapters
+            chaptersList.innerHTML = '';
+            chapters.forEach(chap => {
+                const li = document.createElement('li');
+                li.textContent = chap.chapter_name;
+                li.dataset.chapterId = chap.id;
+                li.addEventListener('click', () => {
+                    // Redirect to editor page with course & chapter
+                    window.location.href = `/dashboard/contributor/submit_content?course_id=${courseId}&chapter_id=${chap.id}`;
+                });
+                chaptersList.appendChild(li);
+            });
+
+            // Show chapters section
+            chaptersSection.style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>

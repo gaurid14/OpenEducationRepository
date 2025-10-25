@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up</title>
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+</head>
+<body>
+<div class="navbar">
+    <div class="logo">OER</div>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Our products</a></li>
+        <li><a href="#">About US</a></li>
+        <li><a href="#">Contact US</a></li>
+    </ul>
+    <button class="signup-btn">Sign Up</button>
+</div>
+
+<div class="container">
+    <div class="login-box">
+        <div class="tabs">
+            <a href="#" class="tab-link active" data-target="login">Login</a>
+            <a href="#" class="tab-link" data-target="signup">Sign up</a>
+        </div>
+
+        <div class="form-row login-row active">
+            <form class="login-form" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <a href="#" class="forgot">Forgot your password?</a>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <div class="illustration">
+                <img src="{% static 'accounts/animation.gif' %}" alt="Login GIF">
+            </div>
+        </div>
+
+        <div class="signup-row">
+            <form class="signup-form" method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <input type="hidden" id="role-input" name="role" value="student">
+
+                <div class="role-tabs">
+                    <button type="button" class="role-tab" data-role="student">Student</button>
+                    <button type="button" class="role-tab" data-role="contributor">Contributor</button>
+                </div>
+
+                <div class="role-form-content">
+                    <div class="role-form active" id="student-form">
+                        <div class="form-group"><label>Full Name</label><input type="text" name="student-name" required></div>
+                        <div class="form-group"><label>College Name</label><input type="text" name="college-name" required></div>
+                        <div class="form-group"><label>Date of Birth</label><input type="date" name="dob" required></div>
+                        <div class="form-group"><label>Gender</label><select name="gender" required><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></div>
+                        <div class="form-group">
+                            <label>Course</label>
+                            <select name="course" required>
+                                <option value="IT">IT</option>
+                                <option value="CS">CS</option>
+                                <option value="MECH">MECH</option>
+                                <option value="EXTC">EXTC</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Year</label>
+                            <select name="year" required>
+                                <option value="1">FE</option>
+                                <option value="2">SE</option>
+                                <option value="3">TE</option>
+                                <option value="4">BE</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="role-form" id="contributor-form">
+                        <div class="form-group"><label>First Name</label><input type="text" name="contrib-fname" required></div>
+                        <div class="form-group"><label>Last Name</label><input type="text" name="contrib-lname" required></div>
+                        <div class="form-group"><label>Phone Number</label><input type="tel" name="contrib-phone" required></div>
+                        <div class="form-group"><label>Designation</label><input type="text" name="designation" required></div>
+                        <div class="form-group"><label>Years of Experience</label><input type="number" name="exp" required></div>
+                        <!-- Program Dropdown -->
+                        <div class="form-group">
+                            <label>Program</label>
+                            <select name="program" id="program-select" required>
+                                <option value="">Select Program</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Commerce">Commerce</option>
+                                <option value="Arts">Arts</option>
+                                <option value="Science">Science</option>
+                                <option value="Humanities">Humanities</option>
+                            </select>
+                        </div>
+
+                        <!-- Highest Qualification Dropdown -->
+                        <div class="form-group">
+                            <label>Highest Qualification</label>
+                            <select name="qualification" id="qualification-select" required>
+                                <option value="">Select Highest Qualification</option>
+                                <option value="Bachelor">Bachelor</option>
+                                <option value="Masters">Masters</option>
+                                <option value="PhD">PhD</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+
+                        <!-- Expertise checkboxes will be populated here -->
+                        <div class="form-group">
+                            <label>Domain of Expertise</label>
+                            <div id="expertise-checkboxes">
+                                <!-- Dynamically filled based on selected program -->
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Date of Birth</label><input type="date" name="contrib-dob" required></div>
+                        <div class="form-group"><label>Current Institution</label><input type="text" name="institution" required></div>
+                        <div class="form-group full-width"><label>Short Bio</label><textarea name="bio"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Create Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // ---- Tab switching code (unchanged) ----
+        const mainTabs = document.querySelectorAll('.tab-link');
+        const loginRow = document.querySelector('.login-row');
+        const signupRow = document.querySelector('.signup-row');
+        mainTabs.forEach(tab => {
+            tab.addEventListener('click', e => {
+                e.preventDefault();
+                mainTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                loginRow.classList.toggle('active', tab.dataset.target === 'login');
+                signupRow.classList.toggle('active', tab.dataset.target === 'signup');
+            });
+        });
+
+        const roleTabsContainer = document.querySelector('.role-tabs');
+        const roleForms = document.querySelectorAll('.role-form');
+        const roleTabs = document.querySelectorAll('.role-tab');
+        const roleInput = document.getElementById('role-input');
+
+        function updateFormRequirements(activeRole) {
+            roleForms.forEach(form => {
+                const isVisible = form.id === activeRole + '-form';
+                form.querySelectorAll('input, select, textarea').forEach(input => {
+                    if (input.type !== 'file') input.required = isVisible;
+                });
+            });
+        }
+
+        if (roleTabsContainer) {
+            roleTabsContainer.addEventListener('click', (e) => {
+                if (!e.target.matches('.role-tab')) return;
+                const targetRole = e.target.dataset.role;
+                if (roleInput) roleInput.value = targetRole;
+                roleTabs.forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                roleForms.forEach(form => form.classList.toggle('active', form.id === targetRole + '-form'));
+                updateFormRequirements(targetRole);
+            });
+        }
+
+        // Keep student form active by default
+        const studentForm = document.getElementById('student-form');
+        const studentTab = document.querySelector('.role-tab[data-role="student"]');
+        if (studentForm && studentTab) {
+            studentForm.classList.add('active');
+            studentTab.classList.add('active');
+        }
+        updateFormRequirements('student');
+
+        // ---- Contributor Program -> Expertise logic ----
+        const programSelect = document.getElementById('program-select');
+        const expertiseContainer = document.getElementById('expertise-checkboxes');
+
+        if (programSelect) {
+            programSelect.addEventListener('change', async () => {
+                expertiseContainer.innerHTML = '';
+                const program = programSelect.value;
+                if (!program) return;
+
+                try {
+                    const response = await fetch(`/register/?program=${program}`);
+                    const data = await response.json();
+
+                    data.forEach(exp => {
+                        const div = document.createElement('div');
+                        div.classList.add('checkbox-item');
+                        div.innerHTML = `
+                            <input type="checkbox" id="exp-${exp.id}" name="expertise" value="${exp.id}">
+                            <label for="exp-${exp.id}">${exp.name}</label>
+                        `;
+                        expertiseContainer.appendChild(div);
+                    });
+                } catch (error) {
+                    console.error("Failed to load expertise:", error);
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
