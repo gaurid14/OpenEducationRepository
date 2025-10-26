@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'oer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("oer", default="oer"),
-        'USER': env("postgres", default="postgres"),
-        'PASSWORD': env("pgadmin4", default="pgadmin4"),
-        'HOST': env("localhost", default="localhost"),
-        'PORT': env("5432", default="5432"),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 

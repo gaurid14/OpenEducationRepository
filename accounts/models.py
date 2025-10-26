@@ -251,3 +251,49 @@ class Option(models.Model):
 
 # python manage.py makemigrations
 # python manage.py migrate
+
+# ---------- Forum Models --------------------------------------------------------------------------------------
+
+class ForumTopic(models.Model):
+    """Represents syllabus topics or chapters used for tagging questions."""
+    name = models.CharField(max_length=150, unique=True)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ForumQuestion(models.Model):
+    """Main question/discussion post."""
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="forum_questions")
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    topics = models.ManyToManyField(ForumTopic, blank=True, related_name="questions")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    upvotes = models.ManyToManyField(User, related_name="question_upvotes", blank=True)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def total_upvotes(self):
+        return self.upvotes.count()
+
+
+class ForumAnswer(models.Model):
+    """Answers or replies to a question."""
+    question = models.ForeignKey(ForumQuestion, on_delete=models.CASCADE, related_name="answers")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="forum_answers")
+    content = models.TextField()
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='child_comments')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    upvotes = models.ManyToManyField(User, related_name="answer_upvotes", blank=True)
+
+    def __str__(self):
+        return f"Answer by {self.author.username} on {self.question.title}"
+
+    @property
+    def total_upvotes(self):
+        return self.upvotes.count()
