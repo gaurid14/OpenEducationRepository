@@ -9,7 +9,7 @@
     </div>
 
     {# ← upvote button for this answer/reply #}
-    <form method="post" action="{% url 'accounts:forum_answer_upvote' answer.id %}">
+    <form method="post" action="{% url 'forum_answer_upvote' answer.id %}">
       {% csrf_token %}
       <button class="btn btn-outline-success btn-sm">▲ {{ answer.total_upvotes }}</button>
     </form>
@@ -18,7 +18,7 @@
   {% if user.is_authenticated %}
     <details class="mt-2">
       <summary class="reply-toggle">Reply</summary>
-      <form method="post" action="{% url 'accounts:forum_reply' question.id answer.id %}" class="mt-2">
+      <form method="post" action="{% url 'forum_reply' question.id answer.id %}" class="mt-2">
         {% csrf_token %}
         <textarea name="content" class="form-control" rows="2" placeholder="Write a reply..."></textarea>
         <button class="btn btn-sm btn-secondary mt-2">Post reply</button>

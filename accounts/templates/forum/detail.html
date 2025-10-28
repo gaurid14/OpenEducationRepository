@@ -9,7 +9,7 @@
 </head>
 <body class="bg-light">
 <div class="container py-4">
-  <a class="btn btn-link mb-3 p-0" href="{% url 'accounts:forum_home' %}">← All discussions</a>
+  <a class="btn btn-link mb-3 p-0" href="{% url 'forum_home' %}">← All discussions</a>
 
   <div class="card mb-3">
     <div class="card-body">
@@ -26,7 +26,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <h6 class="mb-2">Your Answer</h6>
-        <form method="post" action="{% url 'accounts:forum_answer' question.id %}">
+        <form method="post" action="{% url 'forum_answer' question.id %}">
           {% csrf_token %}
           {{ a_form.content }}
           <button class="btn btn-primary btn-sm mt-2">Submit Answer</button>
