@@ -1,0 +1,40 @@
+{# accounts/templates/forum/partials/answer.html #}
+<div class="{% if level > 0 %}reply-branch{% endif %}">
+  <div class="d-flex justify-content-between">
+    <div>
+      <p class="mb-1">{{ answer.content|linebreaks }}</p>
+      <div class="text-muted" style="font-size:.9rem;">
+        by <strong>{{ answer.author.username }}</strong> • {{ answer.created_at|date:"M d, Y H:i" }}
+      </div>
+    </div>
+
+    {# ← upvote button for this answer/reply #}
+    <form method="post" action="{% url 'accounts:forum_answer_upvote' answer.id %}">
+      {% csrf_token %}
+      <button class="btn btn-outline-success btn-sm">▲ {{ answer.total_upvotes }}</button>
+    </form>
+  </div>
+
+  {% if user.is_authenticated %}
+    <details class="mt-2">
+      <summary class="reply-toggle">Reply</summary>
+      <form method="post" action="{% url 'accounts:forum_reply' question.id answer.id %}" class="mt-2">
+        {% csrf_token %}
+        <textarea name="content" class="form-control" rows="2" placeholder="Write a reply..."></textarea>
+        <button class="btn btn-sm btn-secondary mt-2">Post reply</button>
+      </form>
+    </details>
+  {% endif %}
+
+  {# Children (recursive) #}
+  {% with kids=answer.children %}
+    {% if kids %}
+      <div class="mt-2">
+        {% for child in kids %}
+          {# IMPORTANT: correct include path ↓ #}
+          {% include "forum/partials/answer.html" with answer=child question=question level=level|add:1 %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+</div>

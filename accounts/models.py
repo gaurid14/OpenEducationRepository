@@ -297,3 +297,10 @@ class ForumAnswer(models.Model):
     @property
     def total_upvotes(self):
         return self.upvotes.count()
+    
+    class Meta:
+        ordering = ["created_at"]  # oldest first; flip to ["-created_at"] if you prefer
+
+    @property
+    def children(self):
+        return self.child_comments.all().select_related("author")

@@ -7,4 +7,4 @@ __pycache__/
 *.json
 !package.json
 !package-lock.json
-
+todo.txt
