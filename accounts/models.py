@@ -2,7 +2,8 @@
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.db.models import UniqueConstraint
+from django.utils import timezone
 
 # Syllabus
 class Program(models.Model):
@@ -304,3 +305,43 @@ class ForumAnswer(models.Model):
     @property
     def children(self):
         return self.child_comments.all().select_related("author")
+    
+class DmThread(models.Model):
+    """
+    A canonical thread between two users.
+    Enforced uniqueness regardless of order (user_a, user_b).
+    """
+    user_a = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dm_threads_as_a")
+    user_b = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dm_threads_as_b")
+    started_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=["user_a", "user_b"], name="uniq_dm_pair")
+        ]
+
+    def save(self, *args, **kwargs):
+        # always store with smaller id in user_a
+        if self.user_b_id and self.user_a_id and self.user_b_id < self.user_a_id:
+            self.user_a_id, self.user_b_id = self.user_b_id, self.user_a_id
+        super().save(*args, **kwargs)
+
+    def other_of(self, user):
+        return self.user_b if user == self.user_a else self.user_a
+
+    def __str__(self):
+        return f"DM: {self.user_a.username} ↔ {self.user_b.username}"
+
+
+class DmMessage(models.Model):
+    thread   = models.ForeignKey(DmThread, on_delete=models.CASCADE, related_name="messages")
+    sender   = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dm_messages_sent")
+    content  = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read  = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return f"DM msg by {self.sender.username} at {self.created_at:%Y-%m-%d %H:%M}"

@@ -13,10 +13,21 @@
 
   <div class="card mb-3">
     <div class="card-body">
-      <h4 class="mb-1">{{ question.title }}</h4>
-      <div class="text-muted mb-2">
-        by <strong>{{ question.author.username }}</strong> • {{ question.created_at|date:"M d, Y H:i" }}
+      <div class="d-flex justify-content-between align-items-start">
+        <h4 class="mb-1">{{ question.title }}</h4>
+        <form method="post" action="{% url 'forum_question_upvote' question.id %}">
+          {% csrf_token %}
+          <button class="btn btn-outline-primary btn-sm">▲ {{ question.total_upvotes }}</button>
+        </form>
       </div>
+
+      <div class="text-muted mb-2 d-flex align-items-center gap-2">
+        <span>by <strong>{{ question.author.username }}</strong> • {{ question.created_at|date:"M d, Y H:i" }}</span>
+        {% if user.is_authenticated and user.id != question.author_id %}
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'dm_thread' question.author.id %}">Message author</a>
+        {% endif %}
+      </div>
+
       <div class="mb-2">{{ question.content|linebreaks }}</div>
       <div>{% for t in question.topics.all %}<span class="badge bg-secondary">{{ t.name }}</span>{% endfor %}</div>
     </div>
@@ -35,14 +46,12 @@
     </div>
   {% endif %}
 
-<h6 class="mb-3">Answers</h6>
-{% for ans in question.top_answers %}
-  {# correct include path ↓ #}
-  {% include "forum/partials/answer.html" with answer=ans question=question level=0 %}
-{% empty %}
-  <div class="text-muted">No answers yet.</div>
-{% endfor %}
-
+  <h6 class="mb-3">Answers</h6>
+  {% for ans in question.top_answers %}
+    {% include "forum/partials/answer.html" with answer=ans question=question level=0 %}
+  {% empty %}
+    <div class="text-muted">No answers yet.</div>
+  {% endfor %}
 </div>
 </body>
 </html>
