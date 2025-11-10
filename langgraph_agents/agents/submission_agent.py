@@ -6,7 +6,6 @@ import mimetypes
 from langchain.tools import tool
 
 from langgraph_agents.services.drive_service import get_drive_service
-from langgraph_agents.services.pdf_service import read_pdf
 from langgraph_agents.services.gemini_service import llm
 import datetime
 from googleapiclient.discovery import build
@@ -70,67 +69,17 @@ def record_submission_to_db(contributor_id, chapter_id, drive_folders):
 
 # 🔹 Integrate into LangGraph pipeline
 @tool
-async def submission_agent(state: dict) -> dict:
+async def submission_agent(contributor_id: int, chapter_id: int, drive_folders: dict, **kwargs) -> dict:
     """
     LangGraph node that finalizes submission after file processing.
     """
-    contributor_id = state.get("contributor_id")
-    chapter_id = state.get("chapter_id")
-    drive_folders = state.get("drive_folders", {})  # ✅ dict: {"pdf": ..., "video": ..., "assessment": ...}
-
-    # # (Optional) process files if you want to run extraction/summary steps
-    # service = get_drive_service()
-    # for folder_type, folder_id in drive_folders.items():
-    #     if not folder_id:
-    #         continue
-    #     results = service.files().list(
-    #         q=f"'{folder_id}' in parents and trashed=false",
-    #         fields="files(id, name, mimeType)"
-    #     ).execute()
-    #
-    #     for f in results.get("files", []):
-    #         state["file_id"] = f["id"]
-    #         state["metadata"] = {
-    #             "name": f["name"],
-    #             "mime_type": f["mimeType"],
-    #             "folder_type": folder_type
-    #         }
-    #
-    #         if f["mimeType"] == "application/pdf":
-    #             state = extract_pdf_page_count(state)
-    #             state = summarize_pdf_with_gemini(state)
-    #         elif f["mimeType"].startswith("video/"):
-    #             state = transcribe_video(state)
-
-    # ✅ Record to DB (timestamp = confirm submission time)
-    # record_submission_to_db(contributor_id, chapter_id, drive_folders)
 
     # Run DB insertion in background
     loop = asyncio.get_running_loop()
     await loop.run_in_executor(None, record_submission_to_db, contributor_id, chapter_id, drive_folders)
-
-    state["status"] = "submission_recorded"
-    return state
+    return {"status": "submission_recorded"}
 
 
-@tool
-def extract_file_metadata(file_path: str) -> dict:
-    """Extract metadata from an uploaded file."""
-    if not file_path or not os.path.exists(file_path):
-        return {"error": "File not found at path: " + file_path}
 
-    mime_type, _ = mimetypes.guess_type(file_path)
-    try:
-        size_bytes = os.path.getsize(file_path)
-        size_kb = round(size_bytes / 1024, 2)
-    except Exception as e:
-        return {"error": f"Could not get file size for {file_path}: {e}"}
-
-    return {
-        "file_name": os.path.basename(file_path),
-        "mime_type": mime_type if mime_type else "unknown/unknown",
-        "size_bytes": size_bytes,
-        "size_kb": size_kb
-    }
 
 
