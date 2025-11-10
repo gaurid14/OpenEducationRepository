@@ -1,73 +1,265 @@
-import whisper
+import json
 
+from asgiref.sync import sync_to_async
+from langchain.tools import tool
+
+from accounts.models import ContentScore, UploadCheck, Assessment
+from langgraph_agents.services.drive_service import get_drive_service
 from langgraph_agents.services.gemini_service import llm
-from langgraph_agents.services.pdf_service import read_pdf
+from langgraph_agents.services.pdf_service import download_and_read_pdf
+import tempfile
+from googleapiclient.http import MediaIoBaseDownload
 
 
-def format_metadata(state: dict) -> dict:
-    metadata_dict = state["metadata"]
+from langgraph_agents.services.video_service import transcribe_audio_or_video
 
-    if "error" in metadata_dict:
-        state["result"] = f"Error: {metadata_dict['error']}"
-        return state
 
-    output = (
-        f"Filename: {metadata_dict['file_name']}, "
-        f"Extension: {metadata_dict['mime_type']}, "
-        f"Size: {metadata_dict['size_bytes']} bytes"
+def extract_all_pdf_texts(folder_id):
+    service = get_drive_service()
+    results = service.files().list(
+        q=f"'{folder_id}' in parents and mimeType='application/pdf' and trashed=false",
+        fields="files(id, name)"
+    ).execute()
+
+    pdf_texts = []
+    for f in results.get("files", []):
+        content = download_and_read_pdf(f["id"])
+        pdf_texts.append(content)
+    return pdf_texts
+
+
+def extract_all_video_transcripts(folder_id):
+    """
+    Extracts transcripts from all video files in a Drive folder.
+    Downloads each video temporarily to transcribe with Whisper.
+    """
+    service = get_drive_service()
+    results = service.files().list(
+        q=f"'{folder_id}' in parents and trashed=false",
+        fields="files(id, name, mimeType)"
+    ).execute()
+
+    transcripts = []
+
+    for f in results.get("files", []):
+        if f["mimeType"].startswith("video/"):
+            print(f"[INFO] Processing video: {f['name']}")
+
+            # Create a temporary file
+            with tempfile.NamedTemporaryFile(delete=True, suffix=".mp4") as tmp_file:
+                # Download the file from Drive
+                request = service.files().get_media(fileId=f["id"])
+                downloader = MediaIoBaseDownload(tmp_file, request)
+                done = False
+                while not done:
+                    status, done = downloader.next_chunk()
+                    if status:
+                        print(f"[INFO] Download {int(status.progress() * 100)}%.")
+
+                tmp_file.flush()  # Ensure all bytes are written
+                tmp_file.seek(0)
+
+                # Transcribe using Whisper
+                state = {"file_path": tmp_file.name}
+                state = transcribe_audio_or_video(state)
+                transcripts.append(state.get("transcript", ""))
+
+    return transcripts
+
+async def analyze_engagement_with_gemini(content: str) -> dict:
+    """
+    Uses Gemini to count engagement elements in content.
+    """
+    prompt = f"""
+    You are an educational content evaluator.
+
+    Analyze the following material and return the COUNT of:
+    - Case studies (explicit or implied)
+    - Assessments (questions, exercises, or activities)
+    - Scenario cues or examples (real-world, what-if, role-play)
+
+    Respond ONLY in pure JSON:
+    {{
+      "case_studies": <int>,
+      "assessments": <int>,
+      "scenario_cues": <int>
+    }}
+
+    Content:
+    {content}
+    """
+
+    response = llm.invoke(prompt)
+    try:
+        return json.loads(response.content)
+    except Exception as e:
+        print("[ERROR] Gemini JSON parsing failed:", e)
+        return {"case_studies": 0, "assessments": 0, "scenario_cues": 0}
+
+# @tool
+# async def evaluate_engagement(contributor_id: int, chapter_id: int, drive_folders: dict, **kwargs) -> dict:
+#     """
+#     Evaluates the engagement level of uploaded content using Gemini + assessment DB check.
+#     """
+#
+#     # ORM in async → wrap it
+#     upload = await sync_to_async(
+#         lambda: UploadCheck.objects.filter(
+#             contributor_id=contributor_id, chapter_id=chapter_id
+#         ).order_by('-timestamp').first()
+#     )()
+#
+#     if not upload:
+#         return {"status": "no_upload_found"}
+#
+#     # Get or create ContentScore entry
+#     score_obj, _ = ContentScore.objects.get_or_create(upload=upload)
+#
+#     # Extract content from PDFs and videos
+#     pdf_texts = extract_all_pdf_texts(drive_folders.get("pdf"))
+#     video_texts = extract_all_video_transcripts(drive_folders.get("videos"))
+#     full_text = "\n\n".join(pdf_texts + video_texts)
+#
+#     if not full_text.strip():
+#         return {"status": "no_content_found"}
+#
+#     # Run Gemini analysis
+#     gemini_result = await analyze_engagement_with_gemini(full_text)
+#     case_studies = gemini_result["case_studies"]
+#     assessments = gemini_result["assessments"]
+#     scenario_cues = gemini_result["scenario_cues"]
+#
+#     # Check if contributor uploaded assessments for this chapter
+#     has_assessment = Assessment.objects.filter(
+#         chapter_id=chapter_id,
+#         course_id=upload.chapter.course_id,
+#         contributor_id=contributor_id
+#     ).exists()
+#
+#     # Compute engagement score (weighted 0–10)
+#     engagement_score = (
+#             (case_studies * 2) +
+#             (scenario_cues * 1.5) +
+#             (assessments * 1.5) +
+#             (5 if has_assessment else 0)
+#     )
+#
+#     # Cap the score at 10
+#     engagement_score = min(10, round(engagement_score, 2))
+#
+#     # Save the score
+#     score_obj.engagement = engagement_score
+#     score_obj.save()
+#
+#     # Check if all four parameters are filled → mark evaluation complete
+#     if all([
+#         score_obj.completeness,
+#         score_obj.clarity,
+#         score_obj.accuracy,
+#         score_obj.engagement
+#     ]):
+#         upload.evaluation_status = True
+#         upload.save()
+#
+#     return {
+#         "status": "engagement_evaluated",
+#         "details": {
+#             "case_studies": case_studies,
+#             "scenario_cues": scenario_cues,
+#             "assessments_found": assessments,
+#             "assessment_uploaded": has_assessment
+#         },
+#         "score": engagement_score
+#     }
+
+
+from asgiref.sync import sync_to_async
+from langchain.tools import tool
+
+@tool
+async def evaluate_engagement(contributor_id: int, chapter_id: int, drive_folders: dict, **kwargs) -> dict:
+    """
+    Evaluates the engagement level of uploaded content using Gemini + assessment DB check.
+    """
+
+    # ✅ ORM in async → wrap it
+    upload = await sync_to_async(
+        lambda: UploadCheck.objects.filter(
+            contributor_id=contributor_id, chapter_id=chapter_id
+        ).order_by('-timestamp').first()
+    )()
+
+    if not upload:
+        return {"status": "no_upload_found"}
+
+    # ✅ Wrap get_or_create
+    score_obj, _ = await sync_to_async(
+        lambda: ContentScore.objects.get_or_create(upload=upload)
+    )()
+
+    # ✅ If your PDF / video extractors are synchronous — wrap them too
+    pdf_texts = await sync_to_async(extract_all_pdf_texts)(drive_folders.get("pdf"))
+    video_texts = await sync_to_async(extract_all_video_transcripts)(drive_folders.get("videos"))
+    full_text = "\n\n".join(pdf_texts + video_texts)
+
+    if not full_text.strip():
+        return {"status": "no_content_found"}
+
+    # ✅ Gemini analysis (already async)
+    gemini_result = await analyze_engagement_with_gemini(full_text)
+    case_studies = gemini_result["case_studies"]
+    assessments = gemini_result["assessments"]
+    scenario_cues = gemini_result["scenario_cues"]
+
+    # ✅ ORM existence check
+    has_assessment = await sync_to_async(
+        lambda: Assessment.objects.filter(
+            chapter_id=chapter_id,
+            course_id=upload.chapter.course_id,
+            contributor_id=contributor_id
+        ).exists()
+    )()
+
+    # Compute engagement score (weighted 0–10)
+    engagement_score = (
+            (case_studies * 2) +
+            (scenario_cues * 1.5) +
+            (assessments * 1.5) +
+            (5 if has_assessment else 0)
     )
 
-    if "page_count" in metadata_dict:
-        output += f", Page Count: {metadata_dict['page_count']} pages"
+    engagement_score = min(10, round(engagement_score, 2))
 
-    if "summary" in state:
-        output += f"\n\n📄 Gemini Summary:\n{state['summary']}"
+    # ✅ Save the score safely
+    await sync_to_async(lambda: _save_score(score_obj, engagement_score))()
 
-    if "transcript" in state:
-        output += f"\n\n🎤 Transcript:\n{state['transcript']}"
+    # ✅ Check if all parameters filled and mark complete
+    # await sync_to_async(lambda: _finalize_upload(upload, score_obj))()
 
-    state["result"] = output
-    return state
+    return {
+        "status": "engagement_evaluated",
+        "details": {
+            "case_studies": case_studies,
+            "scenario_cues": scenario_cues,
+            "assessments_found": assessments,
+            "assessment_uploaded": has_assessment
+        },
+        "score": engagement_score
+    }
 
 
-def extract_pdf_page_count(state: dict) -> dict:
-    """If file is PDF, add page count and text."""
-    file_path = state["file_path"]
-    try:
-        pages, text = read_pdf(file_path)
-        state["metadata"]["page_count"] = pages
-        state["pdf_text"] = text
-    except Exception as e:
-        state["metadata"]["pdf_read_error"] = f"Could not read PDF pages: {e}"
-    return state
+# Helper functions (run synchronously)
+def _save_score(score_obj, engagement_score):
+    score_obj.engagement = engagement_score
+    score_obj.save()
 
-def summarize_pdf_with_gemini(state: dict) -> dict:
-    """Summarize extracted PDF text."""
-    if not state.get("pdf_text", "").strip():
-        state["summary"] = "No text content could be extracted for summarization."
-        return state
 
-    try:
-        prompt = f"Summarize the following document in 5-6 concise bullet points:\n\n{state['pdf_text']}"
-        response = llm.invoke(prompt)
-        state["summary"] = response.content
-    except Exception as e:
-        state["summary"] = f"Gemini summarization failed: {e}"
-    return state
-
-def transcribe_video(state: dict) -> dict:
-    """
-    Transcribes video files using free local Whisper model.
-    """
-    file_path = state["file_path"]
-
-    # Load Whisper model (base is a good balance of speed & accuracy)
-    model = whisper.load_model("base")
-
-    try:
-        result = model.transcribe(file_path)
-        state["transcript"] = result["text"]
-    except Exception as e:
-        state["transcript"] = f"Transcription failed: {e}"
-
-    return state
+# def _finalize_upload(upload, score_obj):
+#     if all([
+#         score_obj.completeness,
+#         score_obj.clarity,
+#         score_obj.accuracy,
+#         score_obj.engagement
+#     ]):
+#         upload.evaluation_status = True
+#         upload.save()
