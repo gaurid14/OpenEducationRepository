@@ -26,7 +26,11 @@ if __name__ == '__main__':
 # python manage.py migrate
 
 # to create superuser admin
+<<<<<<< HEAD
 # python manage.py createsuperuser  
+=======
+# python manage.py createsuperuser
+>>>>>>> 1c8d171 (Update UI and agents)
 
 # python manage.py runserver
 # http://127.0.0.1:8000/ — to see your frontend

@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OER AgentFlow | AI-Powered Content Curation{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Variables for fallback (new colors are hardcoded below) */
+        :root {
+            --bg-light: #F4FCFA;
+            --card-bg: #FFFFFF;
+            --primary-color: #1EAE98;
+            --primary-hover: #178D79;
+            --text-dark: #333333;
+            --secondary-accent: #D9F5E2;
+        }
+
+        body {
+            font-family: 'Inter', 'Roboto', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* =========================================== */
+        /* --- NEW HEADER STYLES FROM REGISTER.HTML --- */
+        /* =========================================== */
+
+        /* This replaces the old .navbar style */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            /* Removed old border-bottom */
+        }
+
+        /* This replaces the old .navbar .logo style */
+        .logo-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: #009688; /* New color from your CSS */
+        }
+
+        /* This replaces the old .navbar ul style */
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 30px; /* New spacing from your CSS */
+            margin: 0;
+            padding: 0;
+            align-items: center; /* Added for alignment */
+        }
+
+        /* This is the base <li> for dropdowns, kept for functionality */
+        .nav-item {
+            position: relative;
+            /* margin: 0 15px; <-- Removed, now uses 'gap' */
+        }
+
+        /* This replaces the old .navbar ul li a style */
+        .nav-link {
+            text-decoration: none;
+            color: #333; /* NEW BLACK COLOR */
+            font-weight: 500; /* NEW FONT WEIGHT */
+            padding: 10px 0px; /* Adjusted padding for new look */
+            display: block;
+            transition: 0.3s;
+            border-radius: 6px; /* Kept for consistency */
+        }
+
+        /* New hover style from your CSS */
+        .nav-link:hover {
+            color: #009688; /* New hover color */
+            background: transparent; /* No background */
+        }
+
+        /* This is the new .signup-btn style */
+        .signup-btn {
+            padding: 8px 16px;
+            border: none;
+            background: #009688;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none; /* Added for <a> tag */
+            font-weight: 500; /* Added for consistency */
+            font-size: 1em; /* Added for consistency */
+        }
+
+        /* New hover for .signup-btn */
+        .signup-btn:hover {
+            background: #00796b;
+            color: #fff; /* Explicitly set color */
+            transform: none; /* Removed old transform */
+        }
+
+        /* =========================================== */
+        /* --- DROPDOWN STYLES (KEPT FOR FUNCTION) --- */
+        /* =========================================== */
+
+        .dropdown-menu, .submenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            min-width: 180px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--secondary-accent);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .dropdown-menu {
+            top: 100%;
+            left: 0;
+        }
+
+        .submenu {
+            top: -1px;
+            left: 100%;
+            margin-left: 5px;
+        }
+
+        .nav-item:hover > .dropdown-menu,
+        .has-submenu:hover > .submenu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Dropdown links (also black) */
+        .dropdown-menu a, .submenu a {
+            color: #333; /* Black links inside dropdown */
+            font-weight: 400;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0;
+            font-size: 0.95em; /* Slightly smaller for dropdowns */
+        }
+
+        .dropdown-menu li:first-child a { border-top-left-radius: 8px; border-top-right-radius: 8px; }
+        .dropdown-menu li:last-child a { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+
+        /* Dropdown hover (uses new green) */
+        .dropdown-menu a:hover, .submenu a:hover {
+            background-color: var(--secondary-accent);
+            color: #009688;
+        }
+
+        .has-submenu span {
+            font-size: 0.8em;
+            color: #009688;
+            transition: transform 0.3s;
+        }
+
+        /* Highlight the active path in the dropdown (uses new green) */
+        .has-submenu:hover > a {
+            background-color: #009688;
+            color: white;
+            border-radius: 0;
+        }
+
+        /* --- Footer --- */
+        .app-footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid var(--secondary-accent);
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <span class="logo-text">OER</span>
+
+    <nav class="main-nav">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+
+            <li class="nav-item has-dropdown">
+                <a href="#" class="nav-link">Explore</a>
+                <ul class="dropdown-menu stream-menu">
+
+                    <li class="has-submenu">
+                        <a href="#" class="nav-link">IT <span>▶</span></a>
+                        <ul class="submenu year-menu">
+                            <li class="has-submenu">
+                                <a href="#" class="nav-link">1st Year <span>▶</span></a>
+                                <ul class="submenu semester-menu">
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=1 semester='1' %}" class="nav-link">Semester 1</a></li>
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=1 semester='2' %}" class="nav-link">Semester 2</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="#" class="nav-link">2nd Year <span>▶</span></a>
+                                <ul class="submenu semester-menu">
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=2 semester='3' %}" class="nav-link">Semester 3</a></li>
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=2 semester='4' %}" class="nav-link">Semester 4</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="#" class="nav-link">3rd Year <span>▶</span></a>
+                                <ul class="submenu semester-menu">
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=3 semester='5' %}" class="nav-link">Semester 5</a></li>
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=3 semester='6' %}" class="nav-link">Semester 6</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="#" class="nav-link">4th Year <span>▶</span></a>
+                                <ul class="submenu semester-menu">
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=4 semester='7' %}" class="nav-link">Semester 7</a></li>
+                                    <li><a href="{% url 'subject_view' stream='Information Technology' year=4 semester='8' %}" class="nav-link">Semester 8</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="#" class="nav-link">Comps <span>▶</span></a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#" class="nav-link">EXTC <span>▶</span></a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#" class="nav-link">Mechanical <span>▶</span></a>
+                    </li>
+
+                </ul>
+            </li>
+
+<!--            <li class="nav-item"><a href="#" class="nav-link">Our products</a></li>-->
+            <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About US</a></li>
+            <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact US</a></li>
+        </ul>
+    </nav>
+
+    <a href="{% url 'login' %}" class="signup-btn">Sign Up</a>
+</header>
+<div class="main-content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer class="app-footer">
+    &copy; 2025 OER Agentic System Project. Built for scalable, quality education.
+</footer>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}{{ course.course_name }} - Chapters{% endblock %}
+
+{% block content %}
+<section class="subject-header fade-in">
+    <p>COURSE / {{ course.course_code }}</p>
+    <h1>{{ course.course_name }}</h1>
+</section>
+
+<div class="subject-grid">
+    {% for chapter in chapters %}
+    <div class="subject-card">
+        <h3>Chapter {{ chapter.chapter_number }}: {{ chapter.chapter_name }}</h3>
+        <p>{{ chapter.description|truncatewords:30 }}</p>
+        <a href="#" class="btn">Open Chapter</a>
+    </div>
+    {% empty %}
+    <p>No chapters found for this course.</p>
+    {% endfor %}
+</div>
+{% endblock %}

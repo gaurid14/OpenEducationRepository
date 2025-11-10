@@ -1,9 +1,10 @@
 import asyncio
 import threading
+import urllib
 
 import docx
 from asgiref.sync import async_to_sync
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from docx import Document
 
@@ -13,102 +14,256 @@ from googleapiclient.http import MediaFileUpload, MediaIoBaseUpload, MediaIoBase
 from google.oauth2.credentials import Credentials
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 import os
 import tempfile
 import json
 import io
+from urllib.parse import unquote
 
 import pdfkit
 import time
 
+from langgraph_agents.agents.submission_agent import submission_agent
 from langgraph_agents.graph.workflow import compiled_graph, graph
 from langgraph_agents.services.drive_service import get_drive_service, get_or_create_drive_folder
 from langgraph_agents.services.gemini_service import llm
 
+from urllib.parse import unquote
+
+
+def contributor_upload_file(request):
+    course_id = request.GET.get('course_id')
+    chapter_id = request.GET.get('chapter_id')
+    topic = unquote(request.GET.get('topic', ''))
+
+    service = get_drive_service()
+
+    # Validate inputs
+    if not all([course_id, chapter_id, topic]):
+        return HttpResponseBadRequest("Missing course_id, chapter_id, or topic parameter")
+
+    # Fetch course and chapter safely
+    course = get_object_or_404(Course, id=course_id)
+    chapter = get_object_or_404(Chapter, id=chapter_id)
+    contributor_id = request.user.id
+
+    # 🔹 Check if already submitted
+    existing_upload = UploadCheck.objects.filter(
+        contributor_id=contributor_id,
+        chapter_id=chapter_id
+    ).first()
+
+    if existing_upload:
+        return render(request, "contributor/after_submission.html", {
+            "chapter_name": chapter.chapter_name,
+            "contributor_id": contributor_id,
+            "message": "You have already submitted this chapter’s content."
+        })
+
+    # Store context in session
+    request.session.update({
+        "contributor_id": contributor_id,
+        "course_name": course.course_name,
+        "course_id": course_id,
+        "chapter_id": chapter_id,
+        "chapter_name": chapter.chapter_name,
+        "chapter_number": chapter.chapter_number,
+        "description": chapter.description,
+        "topic": topic,
+    })
+
+    # Initialize Drive service
+    service = get_drive_service()
+    oer_root_id = get_or_create_drive_folder(service, "oer_content")
+
+    # Base folder name for contributor-chapter
+    base_folder_name = f"{contributor_id}_{course.id}_{chapter.chapter_number}"
+
+    # Helper: fetch files for a folder type and topic
+    def get_files_from_folder(folder_type):
+        try:
+            # 1️⃣ Find or create root subfolder (drafts/pdf/videos) under main OER folder
+            root_folder_id = get_or_create_drive_folder(
+                service, settings.GOOGLE_DRIVE_FOLDERS[folder_type], oer_root_id
+            )
+
+            # 2️⃣ Find contributor's folder inside that section
+            query = (
+                f"mimeType='application/vnd.google-apps.folder' "
+                f"and name='{base_folder_name}' "
+                f"and '{root_folder_id}' in parents and trashed=false"
+            )
+            folders = service.files().list(q=query, fields="files(id, name)").execute().get('files', [])
+            if not folders:
+                return []  # Contributor folder doesn’t exist
+
+            chapter_folder_id = folders[0]['id']
+
+            # 3️⃣ Now check for topic folder inside contributor’s folder
+            query_topic = (
+                f"mimeType='application/vnd.google-apps.folder' "
+                f"and name='{topic}' "
+                f"and '{chapter_folder_id}' in parents and trashed=false"
+            )
+            topic_folders = service.files().list(q=query_topic, fields="files(id, name)").execute().get('files', [])
+            if not topic_folders:
+                return []  # Topic folder doesn’t exist yet
+
+            topic_folder_id = topic_folders[0]['id']
+
+            # 4️⃣ Fetch all files under that topic folder
+            result = service.files().list(
+                q=f"'{topic_folder_id}' in parents and trashed=false",
+                fields="files(id, name, mimeType)"
+            ).execute()
+
+            files_list = []
+            for f in result.get('files', []):
+                files_list.append({
+                    'id': f['id'],
+                    'name': f['name'],
+                    'mimeType': f['mimeType'],
+                    'type': folder_type
+                })
+            return files_list
+
+        except Exception as e:
+            print(f"[Drive Fetch Error - {folder_type}] {e}")
+            return []
+
+    # Fetch all file types
+    files = []
+    for folder_type in ['drafts', 'pdf', 'videos']:
+        files.extend(get_files_from_folder(folder_type))
+
+    context = {
+        "course": course,
+        "chapter": chapter,
+        "topic": topic,
+        "files": files,
+    }
+    return render(request, "contributor/contributor_upload_file.html", context)
+
 
 @csrf_exempt
 def upload_files(request):
-    """Upload PDFs or videos to personal Drive. Create folders only if needed."""
-    contributor_id = request.session.get('contributor_id', 101)
+    """Upload PDFs or videos to Drive — organized by contributor, chapter, and topic (keep topic name intact)."""
+    contributor_id = request.session.get('contributor_id')
     course_id = request.session.get('course_id')
     chapter_number = request.session.get('chapter_number')
-    chapter_name = request.session.get('chapter_name', 'structured_query_language')
+    chapter_name = request.session.get('chapter_name')
+    topic_name = (request.POST.get('topic') or request.GET.get('topic') or "").strip()
+    print(f"[UPLOAD] Chapter: {chapter_name}, Topic: '{topic_name}'")
 
-    chapter_obj = Chapter.objects.filter(chapter_name__iexact=chapter_name).first()
+    if request.method != "POST":
+        return HttpResponseBadRequest("Invalid request")
 
-    if request.method == "POST":
-        service = get_drive_service()
-        oer_content_id = get_or_create_drive_folder(service, "oer_content")
+    service = get_drive_service()
+    oer_root_id = get_or_create_drive_folder(service, "oer_content")
 
-        # Upload PDFs if present
-        pdf_files = request.FILES.getlist('pdf_file')
-        if pdf_files:
-            pdf_root_id = get_or_create_drive_folder(service, settings.GOOGLE_DRIVE_FOLDERS['pdf'], oer_content_id)
-            contrib_pdf_folder = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", pdf_root_id)
-            for pdf in pdf_files:
-                with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp:
-                    for chunk in pdf.chunks():
-                        tmp.write(chunk)
-                    tmp_path = tmp.name
+    base_folder_name = f"{contributor_id}_{course_id}_{chapter_number}"
+    safe_topic_name = topic_name.replace("/", "-").replace("\\", "-")
 
-                media = MediaFileUpload(tmp_path, mimetype='application/pdf')
-                service.files().create(
-                    body={'name': f"{contributor_id}_{pdf.name}", 'parents': [contrib_pdf_folder]},
-                    media_body=media,
-                    fields='id'
-                ).execute()
+    # ✅ Read all files first before uploading
+    pdf_files = request.FILES.getlist('pdf_file')
+    video_files = request.FILES.getlist('video_file')
 
-                try:
-                    os.remove(tmp_path)
-                except Exception:
-                    time.sleep(0.5)
-                    try:
-                        os.remove(tmp_path)
-                    except Exception as e:
-                        print(f"[ERROR] Could not delete temp file: {tmp_path}, {e}")
+    def get_or_create_nested_folder(service, parent_id, folder_name):
+        query = (
+            f"mimeType='application/vnd.google-apps.folder' "
+            f"and name='{folder_name}' "
+            f"and '{parent_id}' in parents and trashed=false"
+        )
+        results = service.files().list(q=query, fields="files(id, name)").execute()
+        folders = results.get("files", [])
+        if folders:
+            return folders[0]["id"]
+        folder_metadata = {
+            "name": folder_name,
+            "mimeType": "application/vnd.google-apps.folder",
+            "parents": [parent_id],
+        }
+        new_folder = service.files().create(body=folder_metadata, fields="id").execute()
+        return new_folder["id"]
 
-        # Upload Videos if present
-        video_files = request.FILES.getlist('video_file')
-        if video_files:
-            video_root_id = get_or_create_drive_folder(service, settings.GOOGLE_DRIVE_FOLDERS['videos'], oer_content_id)
-            contrib_video_folder = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", video_root_id)
-            for video in video_files:
-                with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as tmp:
-                    for chunk in video.chunks():
-                        tmp.write(chunk)
-                    tmp_path = tmp.name
+    def ensure_topic_folder(folder_type):
+        type_root = get_or_create_drive_folder(service, settings.GOOGLE_DRIVE_FOLDERS[folder_type], oer_root_id)
+        contrib_folder = get_or_create_nested_folder(service, type_root, base_folder_name)
+        if safe_topic_name:
+            topic_folder = get_or_create_nested_folder(service, contrib_folder, safe_topic_name)
+            return topic_folder
+        return contrib_folder
 
-                media = MediaFileUpload(tmp_path, mimetype='video/mp4')
-                service.files().create(
-                    body={'name': f"{contributor_id}_{video.name}", 'parents': [contrib_video_folder]},
-                    media_body=media,
-                    fields='id'
-                ).execute()
+    # =================== PDF UPLOAD ===================
+    if pdf_files:
+        topic_pdf_folder = ensure_topic_folder("pdf")
+        print(f"[UPLOAD] Uploading {len(pdf_files)} PDFs to folder ID {topic_pdf_folder}")
+        for pdf in pdf_files:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+                for chunk in pdf.chunks():
+                    tmp.write(chunk)
+                tmp.flush()
+                tmp_path = tmp.name
 
-                try:
-                    os.remove(tmp_path)
-                except Exception:
-                    time.sleep(0.5)
-                    try:
-                        os.remove(tmp_path)
-                    except Exception as e:
-                        print(f"[ERROR] Could not delete temp file: {tmp_path}, {e}")
+            media = MediaFileUpload(tmp_path, mimetype="application/pdf", resumable=False)
+            service.files().create(
+                body={'name': f"{contributor_id}_{pdf.name}", 'parents': [topic_pdf_folder]},
+                media_body=media,
+                fields='id'
+            ).execute()
 
-        # # Save DB record if chapter exists
-        # if chapter_obj and (pdf_files or video_files):
-        #     UploadCheck.objects.create(
-        #         contributor_id=contributor_id,
-        #         chapter=chapter_obj,
-        #         evaluation_status=False
-        #     )
+            try:
+                media._fd.close()
+                os.remove(tmp_path)
+            except Exception as e:
+                print(f"[ERROR] Could not delete temp file: {tmp_path}, {e}")
 
-        messages.success(request, "Files uploaded to Google Drive successfully!")
-        # return redirect('upload_files')
-        # Redirect back to original submission page
-        course_id = request.session.get("course_id")
-        chapter_id = request.session.get("chapter_id")
-    return redirect(f'/dashboard/contributor/submit_content/?course_id={course_id}&chapter_id={chapter_id}')
+    # =================== VIDEO UPLOAD ===================
+    if video_files:
+        topic_video_folder = ensure_topic_folder("videos")
+        print(f"[UPLOAD] Uploading {len(video_files)} videos to folder ID {topic_video_folder}")
+        for video in video_files:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp:
+                for chunk in video.chunks():
+                    tmp.write(chunk)
+                tmp.flush()
+                tmp_path = tmp.name
+
+            media = MediaFileUpload(tmp_path, mimetype="video/mp4", resumable=False)
+            service.files().create(
+                body={'name': f"{contributor_id}_{video.name}", 'parents': [topic_video_folder]},
+                media_body=media,
+                fields='id'
+            ).execute()
+
+            try:
+                media._fd.close()
+                os.remove(tmp_path)
+            except Exception as e:
+                print(f"[ERROR] Could not delete temp file: {tmp_path}, {e}")
+
+    # ✅ Redirect only after both are done
+    messages.success(request, "Files uploaded to Google Drive successfully!")
+
+    course_id = request.session.get("course_id")
+    chapter_id = request.session.get("chapter_id")
+    request.GET = request.GET.copy()
+    request.GET["course_id"] = str(course_id)
+    request.GET["chapter_id"] = str(chapter_id)
+    request.GET["topic"] = topic_name or ""
+
+    return redirect(
+        f"/dashboard/contributor/submit_content/upload/submission?"
+        f"course_id={course_id}&chapter_id={chapter_id}&topic={urllib.parse.quote(topic_name)}"
+    )
+
+    # return contributor_upload_file(request)
+
+
+
+
+
 
     # return render(request, "contributor/submit_content.html")
 
@@ -122,6 +277,8 @@ def contributor_editor(request):
     contributor_id = request.session.get('contributor_id', 101)
     course_id = request.session.get('course_id')
     chapter_number = request.session.get('chapter_number')
+    topic_name = request.POST.get('topic') or request.GET.get('topic')
+    print("Topic name: " + topic_name)
     chapter_name = request.session.get('chapter_name', 'structured_query_language')
 
     # Root folder for all OER content
@@ -130,8 +287,22 @@ def contributor_editor(request):
     pdf_root_id = get_or_create_drive_folder(service, settings.GOOGLE_DRIVE_FOLDERS['pdf'], oer_root_id)
 
     # Contributor-specific folders
-    drafts_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", drafts_root_id)
-    pdf_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", pdf_root_id)
+    # drafts_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", drafts_root_id)
+    # pdf_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", pdf_root_id)
+
+    # Contributor-level folders
+    base_folder_name = f"{contributor_id}_{course_id}_{chapter_number}"
+    drafts_folder_id = get_or_create_drive_folder(service, base_folder_name, drafts_root_id)
+    pdf_folder_id = get_or_create_drive_folder(service, base_folder_name, pdf_root_id)
+
+    # ✅ Topic-level subfolders inside contributor folder
+    if topic_name:
+        safe_topic_name = topic_name.replace("/", "_").strip()  # avoid invalid path characters
+        drafts_topic_folder_id = get_or_create_drive_folder(service, safe_topic_name, drafts_folder_id)
+        pdf_topic_folder_id = get_or_create_drive_folder(service, safe_topic_name, pdf_folder_id)
+    else:
+        drafts_topic_folder_id = drafts_folder_id
+        pdf_topic_folder_id = pdf_folder_id
 
     if request.method == 'POST':
         action = request.POST.get('action')  # 'draft' or 'submitDraft'
@@ -172,7 +343,7 @@ def contributor_editor(request):
                     # Create new draft
                     doc_filename = f"{contributor_id}_{user_filename}"
                     service.files().create(
-                        body={'name': doc_filename, 'parents': [drafts_folder_id]},
+                        body={'name': doc_filename, 'parents': [drafts_topic_folder_id]},
                         media_body=media,
                         fields='id'
                     ).execute()
@@ -200,10 +371,9 @@ def contributor_editor(request):
                 else:
                     pdf_filename = user_filename
 
-
                 # Upload PDF to Drive
                 service.files().create(
-                    body={'name': pdf_filename, 'parents': [pdf_folder_id]},
+                    body={'name': pdf_filename, 'parents': [pdf_topic_folder_id]},
                     media_body=media,
                     fields='id'
                 ).execute()
@@ -230,9 +400,13 @@ def contributor_editor(request):
 
     course_id = request.session.get("course_id")
     chapter_id = request.session.get("chapter_id")
-    return redirect(f'/dashboard/contributor/submit_content/?course_id={course_id}&chapter_id={chapter_id}')
 
+    request.GET = request.GET.copy()
+    request.GET['course_id'] = str(course_id)
+    request.GET['chapter_id'] = str(chapter_id)
+    request.GET['topic'] = topic_name or ''
 
+    return contributor_upload_file(request)
 
 
 # ---------------- LOAD FILE CONTENT ---------------- #
@@ -258,7 +432,6 @@ def load_file(request):
         print("Loading file_id:", file_id)
         print("Service object:", service)
 
-
         if 'text/html' in mime_type:
             content = fh.getvalue().decode('utf-8')
         elif mime_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
@@ -274,6 +447,7 @@ def load_file(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
 
 @csrf_exempt
 def delete_drive_file(request):
@@ -291,6 +465,7 @@ def delete_drive_file(request):
     chapter_id = request.session.get("chapter_id")
     return redirect(f'/dashboard/contributor/submit_content/?course_id={course_id}&chapter_id={chapter_id}')
     # return JsonResponse({'success': False, 'message': 'Invalid request'})
+
 
 @csrf_exempt
 def submit_assessment(request):
@@ -315,7 +490,7 @@ def submit_assessment(request):
             questions_data.append({'text': q_text, 'correct': correct, 'options': options})
             i += 1
 
-        assessment = Assessment.objects.create(course=course, chapter=chapter, created_by=request.user)
+        assessment = Assessment.objects.create(course=course, chapter=chapter, contributor_id=request.user)
 
         for q in questions_data:
             question = Question.objects.create(
@@ -327,8 +502,6 @@ def submit_assessment(request):
                 Option.objects.create(question=question, text=opt_text)
 
     return redirect(f'/dashboard/contributor/submit_content/?course_id={course_id}&chapter_id={chapter_id}')
-
-
 
 
 @csrf_exempt
@@ -376,9 +549,12 @@ def confirm_submission(request):
         assess_root_id = get_or_create_drive_folder(service, settings.GOOGLE_DRIVE_FOLDERS['assessments'], oer_root_id)
 
         # 🔹 Contributor-specific folders
-        pdf_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", pdf_root_id)
-        video_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", video_root_id)
-        assess_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}", assess_root_id)
+        pdf_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}",
+                                                   pdf_root_id)
+        video_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}",
+                                                     video_root_id)
+        assess_folder_id = get_or_create_drive_folder(service, f"{contributor_id}_{course_id}_{chapter_number}",
+                                                      assess_root_id)
 
         # 🔹 Prepare LangGraph state
         state = {
@@ -393,19 +569,83 @@ def confirm_submission(request):
             }
         }
 
-        async def run_graph_async(state):
-            await compiled_graph(state)  # compiled_graph is awaitable
+        # async def run_graph():
+        #     return await compiled_graph.ainvoke(state)       # compiled_graph is awaitable
+        #
+        # # Run synchronously (not background)
+        # result = asyncio.run(run_graph())
+        #
+        # # 🔹 Check result before redirecting
+        # if result and result.get("status") == "submission_recorded":
+        #     return render(request, "contributor/after_submission.html", {
+        #         "chapter_name": chapter_name,
+        #         "contributor_id": contributor_id
+        #     })
 
-        # ✅ Trigger submission agent
-        from langgraph_agents.agents.submission_agent import submission_agent
-        # ✅ Trigger submission agent in background thread
-        threading.Thread(target=lambda: asyncio.run(run_graph_async(state))).start()
+        # Run submission agent synchronously
+        async def run_submission():
+            return await submission_agent.ainvoke(state)
 
-        return render(request, "contributor/after_submission.html", {
-            "chapter_name": chapter_name,
-            "contributor_id": contributor_id
-        })
+        result = asyncio.run(run_submission())  # UI waits only for DB update
+
+        if result.get("status") == "submission_recorded":
+            # Trigger evaluation agent in background (non-blocking)
+            import threading
+            def run_graph_in_thread(state):
+                asyncio.run(compiled_graph.ainvoke(state))  # ensures coroutine is executed
+
+            # trigger in a thread
+            threading.Thread(target=run_graph_in_thread, args=(state,)).start()
+
+            return render(request, "contributor/final_submission.html", {
+                "chapter_name": chapter_name,
+                "contributor_id": contributor_id
+            })
+
+        else:
+            print(f"[ERROR] Submission agent did not return success: {result}")
+            return JsonResponse({'error': 'Submission agent failed or returned invalid response'}, status=500)
 
     except Exception as e:
         print(f"[ERROR] Final submission failed: {e}")
         return JsonResponse({'error': str(e)}, status=500)
+
+
+# # Inside the upload_files view function...
+# def upload_files(request):
+#     # Get course_id, chapter_id, topic_name needed for the redirect
+#     # These might come from hidden inputs in the form or session
+#     course_id = request.POST.get('course_id')
+#     chapter_id = request.POST.get('chapter_id')
+#     topic_name = request.POST.get('topic_name', 'Unknown Topic') # Get topic name
+#
+#     if request.method == "POST":
+#         # ... your logic to handle file saving to Drive ...
+#
+#         messages.success(request, "Files uploaded successfully!")
+#
+#         # FIX: Redirect back to the SAME upload page
+#         # Make sure your 'contributor_upload_file' URL takes these parameters
+#         return redirect()
+#
+#     # Handle GET request (if this view also displays the initial form)
+#     # return render(request, 'accounts/contributor_submit_content.html', ...)
+def generate_assessment(request):
+    print("Assessment view called")
+    # generate_expertise()
+    # Clear all session data safely
+    return render(request, 'contributor/generated-assessment.html')
+
+
+def after_submission(request):
+    print("After submission view called")
+    # generate_expertise()
+    # Clear all session data safely
+    return render(request, 'contributor/after_submission.html')
+
+
+def final_submission(request):
+    print("Final view called")
+    # generate_expertise()
+    # Clear all session data safely
+    return render(request, 'contributor/final_submission.html')

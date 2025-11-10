@@ -17,6 +17,7 @@ with open("token.json", "w") as f:
         "token": creds.token,
         "refresh_token": creds.refresh_token,
         "client_id": creds.client_id,
+        "token_uri": "https://oauth2.googleapis.com/token",
         "client_secret": creds.client_secret,
         "scopes": creds.scopes
     }, f)

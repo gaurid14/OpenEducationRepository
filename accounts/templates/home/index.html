@@ -1,21 +1,283 @@
+{% extends "home/base.html" %}
 {% load static %}
-<!--<!DOCTYPE html>-->
+
+{% block content %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OER Project - Home</title>
+    <title>OER AgentFlow | AI-Powered Content Curation</title>
+    <!-- Use external CSS for main theme variables -->
     <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+    <!-- Use a modern, professional font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Variables from style.css for clarity */
+        :root {
+            --bg-light: #F4FCFA;        /* Main Page Background (Light Mint) */
+            --card-bg: #FFFFFF;         /* Card/Form Background (White) */
+            --primary-color: #1EAE98;   /* Primary Accent (Dark Teal/Green) */
+            --primary-hover: #178D79;   /* Primary Hover (Slightly Darker Teal) */
+            --text-dark: #333333;       /* General Text Color */
+            --secondary-accent: #D9F5E2;/* Secondary Accent (Soft Green/Borders) */
+        }
+        
+        body {
+            font-family: 'Inter', 'Roboto', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- Main Layout --- */
+  
+        .main-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px 20px 60px;
+        }
+        
+        /* --- 1. HERO SECTION --- */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            margin-top: 20px;
+            margin-bottom: 60px;
+            background: linear-gradient(10deg, var(--secondary-accent) 10%, var(--card-bg) 90%);
+            border-radius: 15px;
+            border: 1px solid var(--secondary-accent);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-text {
+            max-width: 55%;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            line-height: 1.1;
+        }
+        
+        .hero-text h1 span {
+            color: var(--primary-color);
+            /* Underline to emphasize the unique feature */
+            border-bottom: 5px solid var(--primary-color); 
+            padding-bottom: 5px;
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 40px;
+        }
+        
+        .hero-image {
+            max-width: 40%;
+        }
+        
+        .hero-image img {
+             width: 100%; 
+             height: auto; 
+             border-radius: 10px;
+        }
+
+        /* --- 2. VALUE PROPS (Mid-Page Features) --- */
+        .value-props-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .value-props-section h2 {
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            margin-bottom: 50px;
+        }
+        .value-prop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .prop-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--secondary-accent);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .prop-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 6px 15px rgba(30, 174, 152, 0.2);
+        }
+        .prop-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .prop-card h3 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* --- 3. ROLE SELECTION --- */
+        .role-selection {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .role-selection h2 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 40px;
+        }
+        
+        .role-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .role-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 280px;
+            height: 350px;
+            padding: 35px 20px;
+            border-radius: 15px;
+            border: 2px solid var(--secondary-accent);
+            background-color: var(--card-bg);
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        
+        .role-button:hover {
+            transform: translateY(-8px);
+            background-color: #F8FFFF; /* Slight hover color */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .role-button h3 {
+            font-size: 1.7rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        .role-button p {
+            font-size: 1rem;
+            color: #666;
+            flex-grow: 1; /* Pushes the button to the bottom */
+            margin-bottom: 20px;
+        }
+        .role-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            background: var(--secondary-accent);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px 20px;
+            }
+            .hero-text {
+                max-width: 100%;
+                padding: 0;
+                margin-bottom: 30px;
+            }
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            .hero-image {
+                max-width: 80%;
+                order: -1; /* Move image above text on small screens */
+                margin-bottom: 30px;
+            }
+            .value-prop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to OER Project</h1>
-        <p>Select your role to continue:</p>
+    <div class="main-content"> 
+        <!-- 1. HERO SECTION: Automated Content Curation -->
+        <section class="hero-section">
+            <div class="hero-text">
+                <h1>
+                    Building Trust in OER with <span>AI Automation</span>
+                </h1>
+                <p>
+                    Leveraging AI Agents (LangGraph/Gemini) to instantly evaluate, score, and certify educational content, ensuring every resource on our platform meets stringent quality and rubric standards.
+                </p>
+                <a href="#role-select" class="hero-cta">Select Your Portal</a>
+            </div>
+            <div class="hero-image">
+                <!-- Placeholder Image for AI/Automation Concept -->
+                <img src="{% static 'images/home.jpg' %}" alt="AI Agent System Diagram Placeholder">
+            </div>
+        </section>
+        
+        <!-- 2. CORE VALUE PROPS: Addressing OER Pain Points -->
+        <section class="value-props-section">
+            <h2>Our AI-Driven Commitment to Quality</h2>
+            <div class="value-prop-grid">
+                
+                <div class="prop-card">
+                    <div class="prop-icon">⚡</div>
+                    <h3>Scalable Speed</h3>
+                    <p>Move past manual bottlenecks. Our agents process thousands of submissions daily, publishing approved materials instantly.</p>
+                </div>
+                
+                <div class="prop-card">
+                    <div class="prop-icon">✅</div>
+                    <h3>Rubric-Based Quality</h3>
+                    <p>Evaluation is grounded in objective educational rubrics, guaranteeing consistency and adherence to academic standards.</p>
+                </div>
+                
+                <div class="prop-card">
+                    <div class="prop-icon">📊</div>
+                    <h3>Data-Backed Transparency</h3>
+                    <p>Contributors receive detailed, explainable scoring from the AI, creating a clear feedback loop for continuous improvement.</p>
+                </div>
 
-        <div class="buttons">
-            <a href="{% url 'contributor_dashboard' %}" class="btn">Login as Contributor</a>
-            <a href="{% url 'student_dashboard' %}" class="btn">Login as Student</a>
-        </div>
+            </div>
+        </section>
+
+        <!-- 3. ROLE SELECTION: Entry Point -->
+        <section class="role-selection" id="role-select">
+            <h2>Access the Platform</h2>
+            <div class="role-grid">
+                
+                <a href="{% url 'login' %}" class="role-button">
+                    <span class="role-icon">✏️</span>
+                    <h3>Contributor Portal</h3>
+                    <p>Submit resources, use our rich text editor, and view detailed evaluation reports.</p>
+                    <div class="btn" style="width: 100%; padding: 10px 20px; font-size: 1em;">Login as Contributor</div>
+                </a>
+
+                <a href="{% url 'login' %}" class="role-button">
+                    <span class="role-icon">📘</span>
+                    <h3>Student Portal</h3>
+                    <p>Discover and utilize certified, high-quality educational materials curated by the system.</p>
+                    <div class="btn" style="width: 100%; padding: 10px 20px; font-size: 1em;">Login as Student</div>
+                </a>
+                
+            </div>
+        </section>
     </div>
+
 </body>
 </html>
+{% endblock %}

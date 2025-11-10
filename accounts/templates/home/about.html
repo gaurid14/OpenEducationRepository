@@ -1,0 +1,78 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}About OER AgentFlow | Quality & Automation{% endblock %}
+
+{% block content %}
+    <style>
+        /* Specific Styles for About Page */
+    .about-section {
+        padding: 60px 40px;
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        margin-top: 30px;
+    }
+    .about-section h2 {
+        font-size: 2.8rem;
+        color: var(--primary-color);
+        margin-bottom: 25px;
+        border-bottom: 3px solid var(--secondary-accent);
+        padding-bottom: 15px;
+    }
+    .about-section p {
+        font-size: 1.15rem;
+        color: var(--text-dark);
+        margin-bottom: 20px;
+        line-height: 1.8;
+    }
+    .core-values {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+    }
+    .value-item {
+        padding: 20px;
+        border-left: 5px solid var(--primary-color);
+        background-color: var(--bg-light);
+        border-radius: 8px;
+    }
+    .value-item h3 {
+        font-size: 1.5rem;
+        color: var(--text-dark);
+        margin-top: 0;
+    }
+</style>
+    <section class="about-section fade-in">
+        <h2>About OER AgentFlow</h2>
+        
+        <p>
+            OER AgentFlow was born from the mission to solve the single greatest challenge in Open Educational Resources (OER): **Trust and Quality Control**. While OER offers universal access, the sheer volume and lack of centralized review often lead to inconsistent quality, making adoption difficult for educators and students.
+        </p>
+
+        <p>
+            We leverage a network of **AI Agents** (powered by LangGraph and Gemini) to automatically review, score, and certify every piece of content submitted to our platform against predefined, objective rubrics. This ensures that every resource consumed by an engineering student is accurate, pedagogically sound, and up-to-date.
+        </p>
+
+        <p>
+            **Our goal is simple:** To be the most reliable, high-quality repository of engineering educational resources available online, using technology to ensure rapid scaling without compromising academic integrity.
+        </p>
+
+        <h3>Our Core Commitments</h3>
+        <div class="core-values">
+            <div class="value-item">
+                <h3>Integrity First</h3>
+                <p>Every resource is evaluated by a transparent, rubric-based AI process, providing verifiable quality assurance.</p>
+            </div>
+            <div class="value-item">
+                <h3>Empowerment</h3>
+                <p>We provide detailed feedback to contributors, empowering them to improve their material and grow the community.</p>
+            </div>
+            <div class="value-item">
+                <h3>Access & Scale</h3>
+                <p>By automating the curation process, we can scale our library to meet the needs of all engineering streams globally.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #e6f8f7, #c7ecec); /* Theme background */
+            color: #333;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- Main Container --- */
+        .assessment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInContainer 0.6s 0.1s ease-out forwards;
+        }
+
+        /* --- Header --- */
+        .assessment-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .assessment-header h1 {
+            color: #1EAE98; /* Theme green */
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .assessment-header p {
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        /* --- Question Block --- */
+        .question-block {
+            background-color: #f8f9fa;
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #1EAE98; /* Theme accent */
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInQuestion 0.5s ease-out forwards;
+        }
+        /* Stagger animation for questions */
+        .question-block:nth-child(1) { animation-delay: 0.3s; }
+        .question-block:nth-child(2) { animation-delay: 0.4s; }
+        .question-block:nth-child(3) { animation-delay: 0.5s; }
+        /* Add more delays if needed */
+
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-list li {
+            background-color: #ffffff;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .options-list input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #1EAE98; /* Style the radio button itself */
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+        .options-list label {
+            flex-grow: 1;
+            cursor: pointer;
+            color: #444;
+        }
+        /* Style for the correct answer (visible to contributor) */
+        .options-list li.correct-answer {
+            border-left: 4px solid #28a745; /* Green indicator */
+            background-color: #e9f7ef; /* Light green background */
+        }
+         .options-list li.correct-answer label::after {
+            content: ' (Correct)';
+            color: #28a745;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-left: 5px;
+         }
+
+        /* --- Publish Button --- */
+        .publish-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            opacity: 0;
+            animation: fadeInButton 0.5s 0.7s ease-out forwards; /* Delay button animation */
+        }
+        .publish-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px; /* Pill shape */
+            background-color: #1EAE98; /* Theme green */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        .publish-button i { margin-right: 8px; }
+        .publish-button:hover {
+            background-color: #178D79;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(30, 174, 152, 0.3);
+        }
+
+        /* --- Keyframe Animations --- */
+        @keyframes fadeInContainer {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInQuestion {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInButton {
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="assessment-container">
+    <div class="assessment-header">
+        <h1>Generated Assessment</h1>
+        <p>Review the generated questions and publish them for students.</p>
+    </div>
+
+    <form id="assessment-form" method="POST" action="/path/to/publish/assessment/">
+        {% csrf_token %}
+        <div class="question-block">
+            <p class="question-text">1. What is the primary purpose of using indexes in a database?</p>
+            <ul class="options-list">
+                <li><input type="radio" name="q1" value="a" id="q1a"><label for="q1a">To enforce data integrity constraints.</label></li>
+                <li class="correct-answer"><input type="radio" name="q1" value="b" id="q1b" checked><label for="q1b">To speed up data retrieval operations.</label></li>
+                <li><input type="radio" name="q1" value="c" id="q1c"><label for="q1c">To reduce database storage space.</label></li>
+                <li><input type="radio" name="q1" value="d" id="q1d"><label for="q1d">To provide data encryption.</label></li>
+            </ul>
+        </div>
+
+        <div class="question-block">
+            <p class="question-text">2. Which SQL clause is used to filter results?</p>
+            <ul class="options-list">
+                <li><input type="radio" name="q2" value="a" id="q2a"><label for="q2a">ORDER BY</label></li>
+                <li><input type="radio" name="q2" value="b" id="q2b"><label for="q2b">GROUP BY</label></li>
+                <li class="correct-answer"><input type="radio" name="q2" value="c" id="q2c" checked><label for="q2c">WHERE</label></li>
+                <li><input type="radio" name="q2" value="d" id="q2d"><label for="q2d">SELECT</label></li>
+            </ul>
+        </div>
+
+        <div class="question-block">
+            <p class="question-text">3. What does ACID stand for in the context of database transactions?</p>
+            <ul class="options-list">
+                <li class="correct-answer"><input type="radio" name="q3" value="a" id="q3a" checked><label for="q3a">Atomicity, Consistency, Isolation, Durability</label></li>
+                <li><input type="radio" name="q3" value="b" id="q3b"><label for="q3b">Availability, Concurrency, Integrity, Durability</label></li>
+                <li><input type="radio" name="q3" value="c" id="q3c"><label for="q3c">Atomicity, Concurrency, Isolation, Distribution</label></li>
+                <li><input type="radio" name="q3" value="d" id="q3d"><label for="q3d">Accuracy, Consistency, Integrity, Durability</label></li>
+            </ul>
+        </div>
+
+        <div class="publish-section">
+            <button type="submit" class="publish-button">
+                <i class="fas fa-paper-plane"></i> Publish Assessment
+            </button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

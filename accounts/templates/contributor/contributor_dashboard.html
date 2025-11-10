@@ -5,184 +5,355 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contributor Dashboard</title>
-    <link rel="stylesheet" href="{% static 'frontend/css/style_contro.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #F4FCFA;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: #FFFFFF;
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.12);
-        }
-        header h2 { color: #1EAE98; }
-        .logout-btn {
-            color: #fff;
-            background: #1EAE98;
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-        .logout-btn:hover { background: #178D79; }
+        /* --- Styles remain the same --- */
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #F4FCFA; color: #333; display: flex; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
 
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
+        /* Main Layout: Sidebar + Content */
+        .dashboard-layout { display: flex; width: 100%; }
+        .sidebar {
+            width: 260px; background-color: #ffffff; padding: 25px 20px;
+            display: flex; flex-direction: column; box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.05);
+            position: fixed; height: 100%; z-index: 100;
         }
+        .sidebar-logo { font-size: 28px; font-weight: bold; color: #1EAE98; margin-bottom: 40px; text-align: center; }
+        .sidebar-nav ul { display: flex; flex-direction: column; gap: 15px; }
+        .sidebar-nav a {
+            display: flex; align-items: center; padding: 12px 15px; border-radius: 8px;
+            color: #555; font-weight: 500; transition: background-color 0.2s, color 0.2s; cursor: pointer;
+        }
+        .sidebar-nav a i { margin-right: 12px; width: 20px; text-align: center; pointer-events: none; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background-color: #e6f8f7; color: #1EAE98; }
+        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #eee; }
+        .sidebar-footer a {
+            display: block; text-align: center; padding: 10px; background-color: #f1f1f1;
+            border-radius: 8px; color: #333; font-weight: bold;
+        }
+        .sidebar-footer a:hover { background-color: #e0e0e0; }
 
-        /* Recommended Subjects */
-        .recommendations {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .recommendations h3 { color: #1EAE98; margin-bottom: 15px; }
-        .recommendations ul { list-style: none; padding: 0; }
-        .recommendations li {
-            background: #f4f4f4;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .recommendations li:hover { background: #1EAE98; color: white; }
+        /* Main Content Area */
+        .main-content { flex-grow: 1; padding: 30px 40px; margin-left: 260px; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .main-header h1 { font-size: 24px; color: #333; }
 
-        /* Chapters Section */
-        .chapters {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .chapters h3 { color: #1EAE98; margin-bottom: 15px; }
-        .chapters ul { list-style: none; padding: 0; }
-        .chapters li {
-            background: #f4f4f4;
-            padding: 8px 10px;
-            margin-bottom: 6px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .chapters li:hover { background: #1EAE98; color: white; }
+        /* Content Sections (Initially Hidden) */
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeInContent 0.4s ease-out; }
 
-        .uploads {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .uploads h3 { color: #1EAE98; margin-bottom: 15px; }
-        .uploads ul { list-style: none; padding: 0; }
-        .uploads li {
-            background: #f4f4f4;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-        }
-        .uploads li ul { padding-left: 15px; }
+        /* Cards */
+        .card { background-color: #ffffff; border-radius: 12px; padding: 25px 30px; margin-bottom: 30px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08); }
+        .card-title { font-size: 20px; color: #1EAE98; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .content-list ul { padding: 0; }
+        .content-list li { background: #f8f9fa; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s, box-shadow 0.2s; border-left: 4px solid #1EAE98; }
+        .content-list li:hover { background-color: #e6f8f7; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .content-list li strong { display: block; margin-bottom: 5px; color: #333; }
+        .content-list li em { font-size: 13px; color: #777; margin-right: 10px; }
+        .content-list li .status-pending { color: orange; font-weight: bold; }
+        .content-list li .status-evaluated { color: green; font-weight: bold; }
+
+        /* Profile Section Specific Styles */
+        .profile-display p { margin-bottom: 10px; font-size: 16px; color: #444;}
+        .profile-display strong { color: #000; min-width: 120px; display: inline-block;}
+
+        /* Modal Styles */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 1050; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s 0.3s linear; display: flex; align-items: center; justify-content: center;}
+        .modal { background-color: #fff; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); transform: translateY(-30px) scale(0.98); opacity: 0; visibility: hidden; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s 0.3s linear; }
+        .modal-header { padding: 18px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;}
+        .modal-title { font-size: 20px; color: #1EAE98;}
+        .modal-close-btn { font-size: 28px; font-weight: bold; color: #aaa; background: none; border: none; cursor: pointer; line-height: 1;}
+        .modal-body { padding: 25px; max-height: 60vh; overflow-y: auto;}
+        .modal-body ul { padding: 0; }
+        .modal-body li { padding: 12px 15px; border-radius: 6px; margin-bottom: 8px; background-color: #f9f9f9; transition: background-color 0.2s; cursor: default; border-left: none; }
+        .modal-body li a { color: #333; font-weight: 500; display: block; cursor: pointer;}
+        .modal-body li:hover { background-color: #e6f8f7; }
+        .modal-body li:hover a { color: #1EAE98; }
+        body.modal-open .modal-overlay { opacity: 1; visibility: visible; transition-delay: 0s; }
+        body.modal-open .modal { transform: translateY(0) scale(1); opacity: 1; visibility: visible; transition-delay: 0s; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInContent { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Profile Sidebar Styles */
+        #profile-sidebar { position: fixed; top: 0; right: 0; width: 340px; height: 100%; background-color: #fff; box-shadow: -2px 0 15px rgba(0,0,0,0.1); padding: 25px; transform: translateX(100%); transition: transform 0.3s ease-in-out; z-index: 1000; display: flex; flex-direction: column; }
+        #profile-sidebar .close-btn { position: absolute; top: 10px; right: 15px; font-size: 30px; color: #aaa; background: none; border: none; cursor: pointer; }
+        #profile-sidebar .sidebar-divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+        #profile-sidebar .profile-picture-area { text-align: center; }
+        #profile-sidebar .profile-picture { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid #eef1f1; }
+        #profile-sidebar .profile-info h3 { font-size: 20px; margin-bottom: 15px; text-align: center; color: #333;}
+        #profile-sidebar .profile-info p { font-size: 14px; margin-bottom: 8px; color: #555; }
+        #profile-sidebar .profile-info strong { min-width: 90px; display: inline-block; color: #000;}
+        #profile-sidebar .upload-form p, #profile-sidebar .upload-form input[type="file"] { display: none; }
+        #profile-sidebar .custom-file-upload { display: inline-block; padding: 6px 12px; cursor: pointer; border-radius: 6px; background-color: #f0f0f0; border: 1px solid #ccc; font-weight: 500; margin-bottom: 8px; transition: background-color 0.2s; font-size: 14px; }
+        #profile-sidebar .custom-file-upload:hover { background-color: #e0e0e0; }
+        #profile-sidebar #file-chosen { display: block; font-style: italic; color: #888; margin-bottom: 12px; font-size: 13px; }
+        #profile-sidebar .upload-form .login-btn { width: 100%; padding: 8px 15px; border-radius: 6px; font-size: 14px; background: #1EAE98; border: none; color: white; cursor: pointer; }
+        #profile-sidebar .upload-form .login-btn:hover { background: #178D79; }
+        #profile-sidebar .sidebar-logout-btn { margin-top: auto; text-align: center; display: block; padding: 12px; background-color: #f1f1f1; color: #333; text-decoration: none; border-radius: 8px; font-weight: bold; transition: background-color 0.2s; }
+        #profile-sidebar .sidebar-logout-btn:hover { background-color: #e0e0e0; }
+        #sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0s 0.3s linear; }
+        body.profile-sidebar-open #profile-sidebar { transform: translateX(0); }
+        body.profile-sidebar-open #sidebar-overlay { opacity: 1; visibility: visible; transition-delay: 0s; }
 
     </style>
 </head>
 <body>
-<header>
-    <h2>Contributor Dashboard</h2>
-    <a href="{% url 'contributor_profile' %}" class="logout-btn" style="margin-right:10px;">Profile</a>
-    <a href="{% url 'home' %}" class="logout-btn">Logout</a>
-</header>
 
-<div class="dashboard-container">
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-logo">OER</div>
+        <nav class="sidebar-nav">
+            <ul id="main-nav">
+                <li><a href="#" class="nav-link active" data-target="dashboard-content"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" class="nav-link" data-target="my-content"><i class="fas fa-book-open"></i> My Content</a></li>
+                <li><a href="{% url 'forum_home' %}" class="nav-link" data-target="forum_home"><i class="fas fa-book-open"></i> Discussion Forum</a></li>
+                <li><a href="{% url 'contributor_profile' %}" class="nav-link" data-target="profile-content"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="#" class="nav-link" data-target="settings-content"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </aside>
 
-    <!-- Recommended Courses -->
-    <section class="recommendations">
-        <h3>Recommended Subjects</h3>
-        <ul id="recommendedCourses">
-            {% for course in recommended_courses %}
-            <li data-course-id="{{ course.id }}">{{ course.course_name }}</li>
-            {% empty %}
-            <li>No recommendations available.</li>
-            {% endfor %}
-        </ul>
-    </section>
+    <main class="main-content">
+        <header class="main-header"><h1 id="main-header-title">Dashboard</h1></header>
 
-    <!-- Chapters Section (Initially Hidden) -->
-    <section class="chapters" id="chaptersSection" style="display:none;">
-        <h3>Chapters</h3>
-        <ul id="chaptersList">
-            <!-- Filled dynamically with JS -->
-        </ul>
-    </section>
+        <div id="content-area">
 
-    <!-- Contributor Uploads -->
-    <section class="uploads">
-        <h3>Your Contributions</h3>
-        {% if uploads %}
-        <ul>
-            {% for upload in uploads %}
-            <li>
-                <strong>{{ upload.chapter.course.course_name }} | Ch {{ upload.chapter.chapter_number }}: {{ upload.chapter.chapter_name }}</strong><br>
-                Uploaded on: {{ upload.timestamp|date:"d M Y H:i" }}<br>
-                Status: {{ upload.evaluation_status|yesno:"Evaluated,Pending" }}<br>
-                <em>Files:</em>
-                <ul>
-                    {% if upload.content_check.pdf %}<li>PDF available</li>{% endif %}
-                    {% if upload.content_check.video %}<li>Video available</li>{% endif %}
-                    {% if upload.content_check.assessment %}<li>Assessment available</li>{% endif %}
-                </ul>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>You have not contributed to any chapters yet.</p>
-        {% endif %}
-    </section>
+            <section id="dashboard-content" class="content-section active">
+                <div class="card recommendations content-list">
+                    <h2 class="card-title">Recommended Subjects</h2>
+                    <ul id="recommendedCourses">
+                        {% for course in recommended_courses %}
+                        <li data-course-id="{{ course.id }}" data-course-name="{{ course.course_name }}">{{ course.course_name }}</li>
+                        {% empty %}
+                        <li>No recommendations available.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+
+            <section id="my-content" class="content-section">
+                <div class="card uploads content-list">
+                    <h2 class="card-title">Your Contributions</h2>
+                    {% if uploads %}
+                    <ul>
+                        {% for upload in uploads %}
+                        <li>
+                            <strong>{{ upload.chapter.course.course_name }} | Ch {{ upload.chapter.chapter_number }}: {{ upload.chapter.chapter_name }}</strong>
+                            <em>Uploaded: {{ upload.timestamp|date:"d M Y H:i" }}</em>
+                            <span class="{% if not upload.evaluation_status %}status-pending{% else %}status-evaluated{% endif %}">
+                                     Status: {{ upload.evaluation_status|yesno:"Evaluated,Pending" }}
+                                 </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>You have not contributed yet.</p>
+                    {% endif %}
+                </div>
+            </section>
+
+
+
+            <section id="profile-content" class="content-section">
+                <div class="card profile-display">
+                    <h2 class="card-title">My Profile Information</h2>
+                    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Designation:</strong> {{ user.designation|default:"N/A" }}</p>
+                    <p><strong>Institution:</strong> {{ user.current_institution|default:"N/A" }}</p>
+                    <p><strong>Expertise:</strong> {{ user.domain_of_expertise|default:"N/A" }}</p>
+                    <p><strong>Experience:</strong> {{ user.years_of_experience|default:"N/A" }} Years</p>
+                    <br>
+                    <p><i>Note: To update your profile picture, please use the slide-out sidebar accessible via the icon in the top right.</i></p>
+                </div>
+            </section>
+
+            <section id="settings-content" class="content-section">
+                <div class="card">
+                    <h2 class="card-title">Settings</h2>
+                    <p>Settings content will go here...</p>
+                </div>
+            </section>
+
+        </div> </main>
+
+</div><div id="chapters-modal-overlay" class="modal-overlay">
+    <div id="chapters-modal" class="modal">
+        <div class="modal-header"> <h3 id="modal-course-title" class="modal-title">Chapters</h3> <button id="modal-close-btn" class="modal-close-btn">&times;</button> </div>
+        <div class="modal-body"> <ul id="modal-chapters-list"></ul> </div>
+    </div>
+</div>
+
+<div id="profile-sidebar" class="sidebar"> <button id="close-sidebar-btn" class="close-btn">&times;</button>
+    <div class="profile-picture-area">
+        {% if user.profile_picture %} <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+        {% else %} <img src="{% static 'accounts/default_avatar.png' %}" alt="Default Avatar" class="profile-picture"> {% endif %}
+        <form method="POST" enctype="multipart/form-data" class="upload-form" action="{% url 'contributor_dashboard' %}"> {% csrf_token %} {{ form.profile_picture }} <label for="id_profile_picture" class="custom-file-upload">Choose File</label> <span id="file-chosen">No file chosen</span> <button type="submit" class="login-btn">Update Picture</button> </form>
+    </div>
+    <hr class="sidebar-divider">
+    <div class="profile-info">
+        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Designation:</strong> {{ user.designation|default:"N/A" }}</p>
+        <p><strong>Expertise:</strong> {{ user.domain_of_expertise|default:"N/A" }}</p>
+        <p><strong>Institution:</strong> {{ user.current_institution|default:"N/A" }}</p>
+    </div>
+    <a href="{% url 'logout' %}" class="sidebar-logout-btn">Logout</a>
+</div>
+<div id="sidebar-overlay" class="overlay"></div>
 
 
 </div>
-
+<script id="chapters-data" type="application/json">
+    {{ chapters_json|safe }}
+</script>
 <script>
-    const courses = {{ recommended_courses|safe }};
-    const chaptersByCourse = {{ chapters_by_course|safe }};
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Static Chapters Data ---
+<!--        const staticChapters = [-->
+<!--            { id: 901, chapter_number: 1, chapter_name: "Example Chapter One" },-->
+<!--            { id: 902, chapter_number: 2, chapter_name: "Example Chapter Two" },-->
+<!--            { id: 903, chapter_number: 3, chapter_name: "Example Chapter Three" }-->
+<!--        ];-->
 
-    // DOM elements
-    const recommendedList = document.getElementById('recommendedCourses');
-    const chaptersSection = document.getElementById('chaptersSection');
-    const chaptersList = document.getElementById('chaptersList');
+        // Load chapters JSON from template
+        const chaptersData = JSON.parse(document.getElementById('chapters-data').textContent || '{}');
 
-    // Click on course -> show chapters
-    recommendedList.addEventListener('click', (e) => {
-        const target = e.target;
-        if(target.tagName === 'LI' && target.dataset.courseId){
-            const courseId = target.dataset.courseId;
-            const chapters = chaptersByCourse[courseId] || [];
+        // --- Modal Elements & Logic ---
+        const recommendedList = document.getElementById('recommendedCourses');
+        const modalOverlay = document.getElementById('chapters-modal-overlay');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const body = document.body;
+        const modalTitle = document.getElementById('modal-course-title');
+        const modalChaptersList = document.getElementById('modal-chapters-list');
 
-            // Populate chapters
-            chaptersList.innerHTML = '';
-            chapters.forEach(chap => {
-                const li = document.createElement('li');
-                li.textContent = chap.chapter_name;
-                li.dataset.chapterId = chap.id;
-                li.addEventListener('click', () => {
-                    // Redirect to editor page with course & chapter
-                    window.location.href = `/dashboard/contributor/submit_content?course_id=${courseId}&chapter_id=${chap.id}`;
+        function openModal(courseId, courseName) {
+            modalTitle.textContent = `Chapters for ${courseName}`;
+            modalChaptersList.innerHTML = '';
+
+            const courseChapters = chaptersData[courseId] || [];
+
+            if (courseChapters.length > 0) {
+                courseChapters.forEach(chap => {
+                    const li = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.textContent = `Chapter ${chap.chapter_number}: ${chap.chapter_name}`;
+                    link.href = `/dashboard/contributor/submit_content/?course_id=${courseId}&chapter_id=${chap.id}`;
+                    li.appendChild(link);
+                    modalChaptersList.appendChild(li);
                 });
-                chaptersList.appendChild(li);
+            } else {
+                const li = document.createElement('li');
+                li.textContent = "No chapters found.";
+                modalChaptersList.appendChild(li);
+            }
+
+            body.classList.add('modal-open');
+        }
+
+        function closeModal() { body.classList.remove('modal-open'); }
+
+        if (recommendedList) { recommendedList.addEventListener('click', (e) => { const targetLi = e.target.closest('li[data-course-id]'); if (targetLi) { const courseId = targetLi.dataset.courseId; const courseName = targetLi.dataset.courseName || targetLi.textContent; openModal(courseId, courseName); } }); }
+        if (modalCloseBtn) { modalCloseBtn.addEventListener('click', closeModal); }
+        if (modalOverlay) { modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) { closeModal(); } }); }
+
+
+        // --- Profile Sidebar Elements & Logic ---
+        const profileBtn = document.getElementById('profile-icon-btn');
+        const closeProfileBtn = document.getElementById('close-sidebar-btn');
+        const profileSidebar = document.getElementById('profile-sidebar');
+        const profileOverlay = document.getElementById('sidebar-overlay');
+        function openProfileSidebar() { body.classList.add('profile-sidebar-open'); }
+        function closeProfileSidebar() { body.classList.remove('profile-sidebar-open'); }
+        if(profileBtn) profileBtn.addEventListener('click', openProfileSidebar);
+        if(closeProfileBtn) closeProfileBtn.addEventListener('click', closeProfileSidebar);
+        if(profileOverlay) profileOverlay.addEventListener('click', closeProfileSidebar);
+
+        // --- File Upload Logic ---
+        const actualFileInput = document.getElementById('id_profile_picture');
+        const fileChosenText = document.getElementById('file-chosen');
+        if (actualFileInput) { actualFileInput.addEventListener('change', function(){ fileChosenText.textContent = this.files.length > 0 ? this.files[0].name : "No file chosen"; }); }
+
+        // --- Sidebar Navigation Logic ---
+        const navLinks = document.querySelectorAll('#main-nav .nav-link');
+        const contentSections = document.querySelectorAll('#content-area .content-section'); // Corrected selector
+        const mainHeaderTitle = document.getElementById('main-header-title');
+
+
+
+       navLinks.forEach(link => {
+
+            link.addEventListener('click', function(e) {
+
+                const targetId = this.dataset.target;
+
+                const targetSection = document.getElementById(targetId);
+
+
+
+                // --- MODIFIED THIS SECTION ---
+
+                // Check if it's an internal link (data-target) or an external/logout link
+
+                if (this.getAttribute('href') === '#') {
+
+                    e.preventDefault(); // Prevent default for all '#' links
+
+                } else {
+
+                    return; // Allow navigation for links like profile and logout
+
+                }
+
+
+
+                if (targetSection) { // If it's a link to a content section
+
+                    // Update header title based on link text
+
+                    mainHeaderTitle.textContent = this.textContent.trim();
+
+
+
+                    // Update active link style
+
+                    navLinks.forEach(lnk => lnk.classList.remove('active'));
+
+                    this.classList.add('active');
+
+
+
+                    // Show/Hide content sections
+
+                    contentSections.forEach(section => section.classList.remove('active'));
+
+                    targetSection.classList.add('active');
+
+                }
+
+                // Note: The new "Wanna Invite" link will be handled separately
+
+                // It doesn't switch content sections, it opens a modal
+
             });
 
-            // Show chapters section
-            chaptersSection.style.display = 'block';
-        }
-    });
+        });
+
+    }); // End DOMContentLoaded
 </script>
 
 </body>
 </html>
+
+
+

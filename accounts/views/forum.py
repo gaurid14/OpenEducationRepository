@@ -222,3 +222,4 @@ def dm_thread(request, user_id: int):
         return redirect("dm_thread", user_id=other.id)
 
     return render(request, "forum/dm_thread.html", {"thread": thread, "other": other, "messages": msgs})
+

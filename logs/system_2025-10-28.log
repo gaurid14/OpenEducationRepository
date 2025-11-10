@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [ERROR] 2025-10-28 00:23:16,084 | django.request | Internal Server Error: /forum/
 Traceback (most recent call last):
   File "D:\IT\_OER\gauri oer\oer\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
@@ -72,10 +73,100 @@ Traceback (most recent call last):
   File "D:\IT\_OER\gauri oer\oer\venv\Lib\site-packages\django\template\engine.py", line 214, in select_template
     raise TemplateDoesNotExist(", ".join(not_found))
 django.template.exceptions.TemplateDoesNotExist: accounts\templates\forum\partials\answer.html
+=======
+[WARNING] 2025-10-28 11:07:14,312 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-28 11:07:14,765 | django.request | Not Found: /favicon.ico
+[WARNING] 2025-10-28 11:07:14,766 | django.server | "GET /favicon.ico HTTP/1.1" 404 6781
+[WARNING] 2025-10-28 11:09:43,356 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-28 11:09:46,881 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-28 11:11:31,613 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[INFO] 2025-10-28 11:18:33,419 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-28 11:18:33,956 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-28 11:18:40,430 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-28 11:18:40,742 | django.server | "GET /static/frontend/images/high-five.jpg HTTP/1.1" 404 1901
+[WARNING] 2025-10-28 11:18:40,757 | django.server | "GET /static/frontend/js/contributor.js HTTP/1.1" 404 1892
+[WARNING] 2025-10-28 11:18:43,152 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-28 11:18:45,710 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-28 11:18:49,160 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 11:20:10,821 | django.request | Not Found: /favicon.ico
+[WARNING] 2025-10-28 11:20:10,823 | django.server | "GET /favicon.ico HTTP/1.1" 404 6781
+[WARNING] 2025-10-28 11:38:44,509 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 11:49:49,228 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 12:00:43,429 | langchain_google_genai.chat_models | Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 2.0 seconds as it raised ResourceExhausted: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 2
+Please retry in 16.688701498s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 2
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 16
+}
+].
+[WARNING] 2025-10-28 12:00:45,596 | langchain_google_genai.chat_models | Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 4.0 seconds as it raised ResourceExhausted: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 2
+Please retry in 14.505186915s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 2
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 14
+}
+].
+[ERROR] 2025-10-28 18:20:52,554 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+>>>>>>> 1c8d171 (Update UI and agents)
 
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
+<<<<<<< HEAD
   File "D:\IT\_OER\gauri oer\oer\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
     response = get_response(request)
                ^^^^^^^^^^^^^^^^^^^^^
@@ -1632,3 +1723,635 @@ Traceback (most recent call last):
     raise self.model.DoesNotExist(
 accounts.models.Program.DoesNotExist: Program matching query does not exist.
 [ERROR] 2025-10-28 15:09:02,596 | django.server | "POST /register/ HTTP/1.1" 500 86148
+=======
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 109, in render
+    reraise(exc, self.backend)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+[ERROR] 2025-10-28 18:20:52,575 | django.server | "GET / HTTP/1.1" 500 134610
+[WARNING] 2025-10-28 18:20:52,912 | django.request | Not Found: /favicon.ico
+[WARNING] 2025-10-28 18:20:52,913 | django.server | "GET /favicon.ico HTTP/1.1" 404 6781
+[ERROR] 2025-10-28 18:21:46,531 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 109, in render
+    reraise(exc, self.backend)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+[ERROR] 2025-10-28 18:21:46,541 | django.server | "GET / HTTP/1.1" 500 134747
+[ERROR] 2025-10-28 18:37:58,546 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 109, in render
+    reraise(exc, self.backend)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+[ERROR] 2025-10-28 18:37:58,557 | django.server | "GET / HTTP/1.1" 500 134747
+[ERROR] 2025-10-28 18:38:20,529 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 109, in render
+    reraise(exc, self.backend)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+[ERROR] 2025-10-28 18:38:20,538 | django.server | "GET / HTTP/1.1" 500 134818
+[ERROR] 2025-10-28 18:38:23,455 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 109, in render
+    reraise(exc, self.backend)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+[ERROR] 2025-10-28 18:38:23,463 | django.server | "GET / HTTP/1.1" 500 134818
+[ERROR] 2025-10-28 18:40:42,007 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'index' not found. 'index' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 18:40:42,035 | django.server | "GET / HTTP/1.1" 500 149146
+[ERROR] 2025-10-28 18:41:59,361 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'subject_list' not found. 'subject_list' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 18:41:59,367 | django.server | "GET / HTTP/1.1" 500 151912
+[ERROR] 2025-10-28 18:43:36,832 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'subject_list' not found. 'subject_list' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 18:43:36,852 | django.server | "GET / HTTP/1.1" 500 151843
+[ERROR] 2025-10-28 18:43:39,883 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'subject_list' not found. 'subject_list' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 18:43:39,890 | django.server | "GET / HTTP/1.1" 500 151843
+[ERROR] 2025-10-28 19:09:08,304 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'subject_view' with keyword arguments '{'stream': 'IT', 'year': 1, 'semester': 'sem1'}' not found. 1 pattern(s) tried: ['subject/\\Z']
+[ERROR] 2025-10-28 19:09:08,334 | django.server | "GET / HTTP/1.1" 500 154071
+[ERROR] 2025-10-28 19:20:48,914 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'about' not found. 'about' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 19:20:48,930 | django.server | "GET / HTTP/1.1" 500 149407
+[ERROR] 2025-10-28 19:24:31,380 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'contact' not found. 'contact' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 19:24:31,398 | django.server | "GET / HTTP/1.1" 500 149387
+[WARNING] 2025-10-28 19:25:29,150 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 19:25:29,158 | django.server | "GET /static/frontend/images/home.jpg HTTP/1.1" 404 1886
+[WARNING] 2025-10-28 19:44:18,279 | django.server | "GET /static/frontend/images/home.jpg HTTP/1.1" 404 1886
+[WARNING] 2025-10-28 19:44:18,276 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 19:44:21,113 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 19:44:21,114 | django.server | "GET /static/frontend/images/home.jpg HTTP/1.1" 404 1886
+[WARNING] 2025-10-28 19:51:09,219 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 19:51:09,223 | django.server | "GET /static/frontend/images/home.jpg HTTP/1.1" 404 1886
+[WARNING] 2025-10-28 20:00:07,178 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:00:17,529 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[ERROR] 2025-10-28 20:07:20,952 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'index' not found. 'index' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 20:07:21,012 | django.server | "GET / HTTP/1.1" 500 149009
+[ERROR] 2025-10-28 20:08:40,887 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'subject_list' not found. 'subject_list' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 20:08:40,901 | django.server | "GET / HTTP/1.1" 500 152264
+[ERROR] 2025-10-28 20:09:41,201 | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gauri\IdeaProjects\oer\accounts\views\views.py", line 24, in home_view
+    return render(request, 'home/index.html')
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gauri\AppData\Local\Programs\Python\Python310\lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'subject_list' not found. 'subject_list' is not a valid view function or pattern name.
+[ERROR] 2025-10-28 20:09:41,215 | django.server | "GET / HTTP/1.1" 500 152264
+[WARNING] 2025-10-28 20:10:45,165 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:10:45,166 | django.server | "GET /static/frontend/images/home.jpg HTTP/1.1" 404 1886
+[WARNING] 2025-10-28 20:11:00,456 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:11:42,235 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:12:28,667 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:12:35,518 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:12:46,200 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:12:49,747 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:14:10,431 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+[WARNING] 2025-10-28 20:14:15,900 | django.server | "GET /static/frontend/css/style.css HTTP/1.1" 404 1880
+>>>>>>> 1c8d171 (Update UI and agents)

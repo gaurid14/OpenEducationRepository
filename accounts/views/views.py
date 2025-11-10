@@ -19,6 +19,8 @@ from ..models import Program, Expertise, User  # Adjust import as per your proje
 def home_view(request):
     print("Home view called")
     # generate_expertise()
+    # Clear all session data safely
+    request.session.flush()  # ✅ deletes session data and session cookie
     return render(request, 'home/index.html')
 
 def login_view(request):
@@ -98,14 +100,14 @@ def logout_view(request):
 
 def register_view(request):
     # ---- Handle AJAX request for expertise dropdown ----
-    if request.method == 'GET' and request.GET.get('program'):
-        program_name = request.GET.get('program')
-        try:
-            program = Program.objects.get(program_name=program_name)
-            expertises = program.expertises.all().values('id', 'name')
-            return JsonResponse(list(expertises), safe=False)
-        except Program.DoesNotExist:
-            return JsonResponse([], safe=False)
+    # if request.method == 'GET' and request.GET.get('program'):
+    #     # program_name = request.GET.get('program')
+    #     try:
+    #         # program = Program.objects.get(program_name=program_name)
+    #         # expertises = program.expertises.all().values('id', 'name')
+    #         # return JsonResponse(list(expertises), safe=False)
+    #     except Program.DoesNotExist:
+    #         return JsonResponse([], safe=False)
 
     # ---- Handle form submission ----
     if request.method == 'POST':
@@ -144,15 +146,15 @@ def register_view(request):
             user.designation = request.POST.get('designation', '').strip()
             user.current_institution = request.POST.get('institution', '').strip()
             user.years_of_experience = request.POST.get('exp') or None
-            user.program = Program.objects.get(program_name=request.POST.get('program'))
+            # user.program = Program.objects.get(program_name=request.POST.get('program'))
             user.highest_qualification = request.POST.get('qualification')
             user.date_of_birth = request.POST.get('contrib-dob')
             user.current_institution = request.POST.get('institution', '').strip()
             user.bio = request.POST.get('bio', '').strip()
-            domain_ids = request.POST.getlist('expertise')  # can select multiple
+            # domain_ids = request.POST.getlist('expertise')  # can select multiple
             user.save()  # must save user before assigning M2M
-            if domain_ids:
-                user.domain_of_expertise.set(domain_ids)  # assign multiple Expertise objects
+            # if domain_ids:
+            #     user.domain_of_expertise.set(domain_ids)  # assign multiple Expertise objects
 
         # Save user
         user.save()

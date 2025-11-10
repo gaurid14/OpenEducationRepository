@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [WARNING] 2025-10-27 11:32:40,661 | django.request | Not Found: /favicon.ico
 [WARNING] 2025-10-27 11:32:40,662 | django.server | "GET /favicon.ico HTTP/1.1" 404 8745
 [WARNING] 2025-10-27 14:26:05,862 | django.request | Not Found: /favicon.ico
@@ -301,3 +302,178 @@ django.template.exceptions.TemplateDoesNotExist: accounts/templates/forum/partia
 [ERROR] 2025-10-27 23:59:14,732 | django.server | "GET /forum/ HTTP/1.1" 500 216220
 [WARNING] 2025-10-27 23:59:15,086 | django.request | Not Found: /favicon.ico
 [WARNING] 2025-10-27 23:59:15,086 | django.server | "GET /favicon.ico HTTP/1.1" 404 7902
+=======
+[WARNING] 2025-10-27 12:14:46,992 | django.request | Not Found: /favicon.ico
+[WARNING] 2025-10-27 12:14:47,023 | django.server | "GET /favicon.ico HTTP/1.1" 404 6781
+[WARNING] 2025-10-27 12:26:29,841 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[INFO] 2025-10-27 12:27:00,979 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:27:02,089 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-27 12:27:12,838 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 12:27:13,162 | django.server | "GET /static/frontend/images/high-five.jpg HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 12:27:13,175 | django.server | "GET /static/frontend/js/contributor.js HTTP/1.1" 404 1892
+[INFO] 2025-10-27 12:27:58,618 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:27:59,025 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:28:03,018 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:28:03,419 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-27 12:32:49,013 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[INFO] 2025-10-27 12:32:54,751 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:32:55,294 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-27 12:33:02,154 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 12:33:02,473 | django.server | "GET /static/frontend/js/contributor.js HTTP/1.1" 404 1892
+[WARNING] 2025-10-27 12:33:02,475 | django.server | "GET /static/frontend/images/high-five.jpg HTTP/1.1" 404 1901
+[INFO] 2025-10-27 12:33:09,234 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:33:09,682 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:33:13,906 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:33:14,338 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:37:46,931 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:37:47,435 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-27 12:37:54,264 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 12:37:54,595 | django.server | "GET /static/frontend/js/contributor.js HTTP/1.1" 404 1892
+[WARNING] 2025-10-27 12:37:54,595 | django.server | "GET /static/frontend/images/high-five.jpg HTTP/1.1" 404 1901
+[INFO] 2025-10-27 12:39:04,146 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:39:04,596 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:39:08,696 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:39:09,132 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:39:11,374 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:39:11,758 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:39:12,702 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:39:13,096 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:39:14,829 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:39:15,234 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:39:16,759 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:39:17,150 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[INFO] 2025-10-27 12:39:40,438 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 12:39:40,872 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-27 13:04:21,303 | langchain_google_genai.chat_models | Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 2.0 seconds as it raised ResourceExhausted: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 2
+Please retry in 38.40793864s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 2
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 38
+}
+].
+[WARNING] 2025-10-27 13:04:23,553 | langchain_google_genai.chat_models | Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 4.0 seconds as it raised ResourceExhausted: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 2
+Please retry in 36.126030912s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 2
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 36
+}
+].
+[WARNING] 2025-10-27 13:04:27,851 | langchain_google_genai.chat_models | Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 8.0 seconds as it raised ResourceExhausted: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 2
+Please retry in 31.865582202s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 2
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 31
+}
+].
+[WARNING] 2025-10-27 13:04:36,176 | langchain_google_genai.chat_models | Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 16.0 seconds as it raised ResourceExhausted: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 2
+Please retry in 23.512253396s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 2
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 23
+}
+].
+[WARNING] 2025-10-27 13:04:52,394 | langchain_google_genai.chat_models | Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 32.0 seconds as it raised ResourceExhausted: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 2
+Please retry in 7.249705589s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 2
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 7
+}
+].
+[WARNING] 2025-10-27 13:09:15,219 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 13:09:23,048 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 14:27:35,245 | django.request | Not Found: /favicon.ico
+[WARNING] 2025-10-27 14:27:35,245 | django.server | "GET /favicon.ico HTTP/1.1" 404 6781
+[WARNING] 2025-10-27 14:48:35,280 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 14:52:06,921 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[INFO] 2025-10-27 14:52:09,824 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 14:52:16,997 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-27 14:52:25,320 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 14:52:25,578 | django.server | "GET /static/frontend/images/high-five.jpg HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 14:52:25,578 | django.server | "GET /static/frontend/js/contributor.js HTTP/1.1" 404 1892
+[WARNING] 2025-10-27 14:53:35,144 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[INFO] 2025-10-27 14:54:26,797 | googleapiclient.discovery_cache | file_cache is only supported with oauth2client<4.0.0
+[INFO] 2025-10-27 14:54:27,295 | google_auth_httplib2 | Refreshing credentials due to a 401 response. Attempt 1/2.
+[WARNING] 2025-10-27 14:54:33,505 | django.server | "GET /static/frontend/css/style_contro.css HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 14:54:33,506 | django.server | "GET /static/frontend/images/high-five.jpg HTTP/1.1" 404 1901
+[WARNING] 2025-10-27 14:54:33,507 | django.server | "GET /static/frontend/js/contributor.js HTTP/1.1" 404 1892
+>>>>>>> 1c8d171 (Update UI and agents)
