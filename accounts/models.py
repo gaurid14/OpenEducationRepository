@@ -240,7 +240,6 @@ class Assessment(models.Model):
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
     chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
     topic = models.CharField(max_length=100, blank=True, null=True)
-    created_by = models.ForeignKey('User', on_delete=models.CASCADE)
     contributor_id = models.ForeignKey('User', on_delete=models.CASCADE)
 
 
